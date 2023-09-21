@@ -133,3 +133,87 @@ function isPalindrome(x) {
   return true;
 }
 ```
+
+## 6、最长公共前缀
+
+## 编写一个函数来查找字符串数组中的最长公共前缀。如果不存在公共前缀，返回空字符串 ""。
+
+**解法思路**：数组中的任意一项字符串作为基数比较，遍历数组中的每项一项和基数字符串进行比较，判断每一项的值是否包含基数，如不包含依次递减基数的长度，每次都更新基数的值
+
+```javascript
+//代码实现
+function longestCommonPrefix(strs) {
+  if (strs.length === 0) {
+    return "";
+  }
+  //取一项作为基数
+  let prefix = strs[0];
+
+  for (let i = 1; i < strs.length; i++) {
+    while (strs[i].indexOf(prefix) !== 0) {
+      prefix = prefix.slice(0, prefix.length - 1);
+      if (prefix === "") {
+        return "";
+      }
+    }
+  }
+
+  return prefix;
+}
+```
+
+## 7、有效的括号
+
+## 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+**解法思路**：遍历传入的数组，利用栈的先进后出的特效，依次将左括号 push 到栈中，当遇到非左括号时，将栈中最后进入的项弹出来，如果和当前遍历的形成括号，那么就继续执行，否则不构成有效括号
+
+```javascript
+//代码实现
+function isBracket(s) {
+  if (s.length === 0) {
+    return false;
+  }
+  const bracket = [];
+  const bracketMap = { "(": ")", "{": "}", "[": "]" }; //建立括号的映射值
+  for (let i = 0; i < s.length; i++) {
+    //判断字符串项是否是括号映射的键（即是否是左括号）
+    if (s[i] in bracketMap) {
+      bracket.push(s[i]);
+    } else {
+      //如果栈中为空则没有左括号就先有右括号，不是有效括号
+      //将栈中的最后一项弹出，和当前字符串项比较，构成一个括号就不做操作，不构成就不是有效括号
+      if (bracket.length === 0 || bracketMap[bracket.pop()] !== s[i]) {
+        return false;
+      }
+    }
+  }
+  //当遍历完整个字符串，栈是空是，则构成有效括号
+  return bracket.length === 0;
+}
+```
+
+## 8、删除有序数组中的重复项
+
+## 给你一个 非严格递增排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持 一致 。然后返回 nums 中唯一元素的个数。
+
+**解法思路**：删除数组中重复的元素，但又要保持相对顺序不变，可以使用双指针的方法。定义一个指针，从1开始，因为第一个元素一定是唯一的，然后依次遍历数组，当遍历的元素和指针不相等时，则为不重复数组，将元素移到以指针下标的位置中（往前移），然后指针累加。依次重复上述步骤，当遍历完数组，指针的大小就是不重复项元素的长度
+
+```javascript
+//代码实现
+function removeDuplicates(nums) {
+  if(nums.length === 0) {
+    return 0
+  }
+  let uniqueCount = 1 //指针的长度
+  for(let i = 1; i < nums.length; i++) {
+    //将当前项与前一项相比，不相等就是不重复的
+    if(nums[i] !== nums[i-1]) {
+      //往前移
+      nums[uniqueCount] = nums[i]
+      uniqueCount++
+    }
+  }
+  return uniqueCount
+}
+```
