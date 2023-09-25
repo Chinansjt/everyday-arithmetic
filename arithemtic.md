@@ -232,7 +232,7 @@ function searchInsert(nums, target) {
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
     if (nums[mid] === target) {
-      return mid // 找到目标，返回索引
+      return mid; // 找到目标，返回索引
     } else if (nums[mid] < target) {
       left = mid + 1; // 目标值在右半部分
     } else {
@@ -252,18 +252,74 @@ function searchInsert(nums, target) {
 ```javascript
 //代码实现
 function lastWorkLength(s) {
-  let sLen = 0
-  let foundLastWord = false
-  for(let i = s.length; i >= 0; i--) {
-    if(s[i] !== '') {
-      //遇到非空格的字符串，长度 + 1，并且表示已经找到末尾单词 
-      sLen++
-      foundLastWord = true
+  let sLen = 0;
+  let foundLastWord = false;
+  for (let i = s.length; i >= 0; i--) {
+    if (s[i] !== "") {
+      //遇到非空格的字符串，长度 + 1，并且表示已经找到末尾单词
+      sLen++;
+      foundLastWord = true;
     } else if (foundLastWord) {
       //当已经找到末尾单词，再遇到空字符串，则表示单词已经找到，终止循环
       break;
     }
   }
-  return sLen
+  return sLen;
+}
+```
+
+## 11、加一
+
+### 给定一个由 整数 组成的 非空 数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+
+**解法思路**：定义一个表示进位的值，初始化为 1，从数组最后一位开始遍历，每次加上进位的值，然后更新进位的值，当没有进位时直接返回数组，如果遍历完了数组，则表示该数组全部为 0，你们在头部添加一个进位 1，然后返回数组
+
+```javascript
+//代码实现
+function plusOne(digits) {
+  let carry = 1; //初始化进位为1
+  for (let i = digits.length - 1; i >= 0; i--) {
+    const sum = digits[i] + carry; //当前的位数加上进位，默认首次是加1
+    digits[i] = sum / 10; // 取余数作为当前的值
+    carry = Math.floor(sum / 10); //更新进位，如果值为1表示还有进位，还需要继续加
+    if (carry === 0) {
+      //没有进位了直接返回数组
+      return digits;
+    }
+  }
+  //遍历完后，数组的值全为0，那么在数组首位添加一个进位1，
+  digits.unshift(carry);
+  return digits;
+}
+```
+
+## 12、二进制求和
+
+### 给你两个二进制字符串 a 和 b ，以二进制字符串的形式返回它们的和。
+
+**解法思路**：定义一个进位，从字符串末尾遍历两个字符串，将当前位和进位相加，最后更新进位。这里主要的思想是，当两个字符串其中一个已经遍历完时，用 0 来代替，而当前位只和进位相加
+
+```javascript
+//代码实现
+function addBinary(a, b) {
+  let carry = 0; //定义一个进位
+  let results = ""; //表示结果的字符串
+  let i = a.length - 1; 
+  let j = b.length - 1;
+
+  //当只要没有遍历完两个字符串，或存在进位，则继续循环
+  while (i >= 0 || j >= 0 || carry > 0) {
+    //如果两个字符串不相等，用0来代替当前相加的位
+    const digitA = i >= 0 ? parseInt(a[i]) : 0;
+    const digitB = j >= 0 ? parseInt(b[j]) : 0;
+
+    const sum = digitA + digitB + carry; //相加
+    carry = Math.floor(sum / 2); //更新进位
+    results = (sum % 2) + results;
+
+    i--;
+    j--;
+  }
+  return results
 }
 ```
