@@ -304,7 +304,7 @@ function plusOne(digits) {
 function addBinary(a, b) {
   let carry = 0; //定义一个进位
   let results = ""; //表示结果的字符串
-  let i = a.length - 1; 
+  let i = a.length - 1;
   let j = b.length - 1;
 
   //当只要没有遍历完两个字符串，或存在进位，则继续循环
@@ -320,6 +320,66 @@ function addBinary(a, b) {
     i--;
     j--;
   }
-  return results
+  return results;
+}
+```
+
+## 13、 x 的平方根
+
+### 给你一个非负整数 x ，计算并返回 x 的 算术平方根 。由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。
+
+**解法思路**：使用二分法查找，根据公式 m = (x - (b - a)/2) 计算中间值，不断的逼近正确的平方根值
+
+```javascript
+//代码实现
+function mySqrt(x) {
+  if (x < 2) return;
+
+  let a = 1;
+  let b = Math.floor(x / 2);
+  let result = 0;
+  while (a <= b) {
+    const mid = Mth.floor(a - (b - a) / 2); //计算中间值
+    const sqrt = mid * mid; //计算平方值
+
+    if (sqrt === x) {
+      return mid;
+    } else if (sqrt < x) {
+      a = mid + 1;
+      result = mid;
+    } else {
+      b = mid - 1;
+    }
+  }
+  return result;
+}
+```
+
+## 14、手动实现一个trim方法
+
+### 实现一个方法传入一个字符串，将首尾非字符串的字符给去掉
+
+**解题思路**：定义首尾两个指针，遍历字符串，直到遇到字符串为止，然后根据指针的下标截取正确的字符串
+
+```javascript
+//代码实现
+function handleWriteTrim(s) {
+  if(s.length < 1) }{
+    return s
+  }
+  let left = 0
+  let right = s.length - 1
+
+  //从前往后匹配，当遇到非空字符串停止
+  while(left < right && /\s/.test(s[left])) {
+    left++
+  }
+  //从后往前匹配，当遇到非空字符串停止
+  while(left < right && /\s/.test(s[right])) {
+    right--
+  }
+
+  const result = s.substring(left, right - 1)
+  return result
 }
 ```
