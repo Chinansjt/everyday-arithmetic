@@ -383,3 +383,58 @@ function handleWriteTrim(s) {
   return result
 }
 ```
+
+## 15、大数相加
+
+### 在JS中，一般的数字相加都可以用 + 号完成，但是当数字大到一定程度的时候，超出了JS的表示范围，那么用+相加就会超出数字的表示范围，因此可以用字符串代替，运用简单的加法得出结果。
+
+**解题思路**：定义两个指针和进位值，从字符串的尾部开始遍历，依次相加，当存在进位时，把进位加上。
+
+```javascript
+//代码实现
+function addString(num1,num2) {
+  let i = num1.length - 1
+  let j = num2.length - 1
+  let carry = 0
+  let result = ''
+  while(i >= 0 || j >= 0 || carry >= 1) {
+      const digit1 = num1[i] ? parseInt(num1[i]) : 0
+      const digit2 = num2[j] ? parseInt(num2[j]) : 0
+      const sum = digit1 + digit2 + carry
+      carry = Math.floor(sum / 10)
+      result = Math.floor(sum % 10) + result
+      i--
+      j--
+  }
+  return result
+}
+```
+
+## 16、扁平化数组
+
+### 请你编写一个函数，它接收一个 多维数组 arr 和它的深度 n ，并返回该数组的 扁平化 后的结果。多维数组 是一种包含整数或其他 多维数组 的递归数据结构。
+
+**解题思路**：扁平化数组有很多种方法，最简单的方法是使用Array的内置flat函数进行扁平化数组，flat接受两个参数，第一个参数是需要扁平化的数组，第二个参数是需要扁平化的深度，并返回已经扁平化的数组。另一种方法是使用递归的方法，在递归中循环遍历传入的数组，判断当前项是否是数组，如果是数组并且深度不大于指定深度则继续递归调用。否则将当前项push到结果集中
+
+```javascript
+//代码实现
+function flat(arr, n) {
+  const result = []
+
+  function flatArray(arrs, deep) {
+    for(let i = 0; i < arrs.length; i++) {
+      if(Array.isArray(arrs[i]) && deep < n) {
+        flatArray(arrs[i], deep + 1)
+      } else {
+        result.push(arrs[i])
+      }
+    }
+  }
+  flatArray(arr, 0)
+  return result
+}
+```
+
+
+
+
