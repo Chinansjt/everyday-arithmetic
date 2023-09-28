@@ -434,7 +434,31 @@ function flat(arr, n) {
   return result
 }
 ```
+## 17、千分位分割符
 
+### 给你一个整数 n，请你每隔三位添加点（即 "." 符号）作为千位分隔符，并将结果以字符串格式返回。
+
+**解题思路**：定义一个计数器，然后将整数n转为字符串再遍历它，每次遍历都将计算器加一，当计算器达到3是，表明已经是千分位了，将 . push到结果集中，在将计算器重置为0
+
+```javascript
+//代码实现
+function thousandSeparator(n) {
+  const str = n.toString()
+  const result = []
+
+  for(let i = str.length - 1, count = 0; i > 0; i--) {
+    if(count === 3) {
+      result.unshift('.')
+      count = 1
+    } else {
+      count++
+    }
+    result.unshift(str[i])
+  }
+
+  return result.join('')
+} 
+```
 
 
 
