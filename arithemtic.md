@@ -188,7 +188,7 @@ function isBracket(s) {
       }
     }
   }
-  //当遍历完整个字符串，栈是空是，则构成有效括号
+  //当遍历完整个字符串，栈是空栈，则构成有效括号
   return bracket.length === 0;
 }
 ```
@@ -460,5 +460,170 @@ function thousandSeparator(n) {
 } 
 ```
 
+## 18、质数（素数）
+
+### 给一个整数n，找出这个整数内的所有质数
+
+**解题思路**：使用暴力解法，定义一个方法isPrimes判断一个数是否是质数，然后循环n，在n的循环中调用isPrimes方法，当返回true时则质数的数量+1
+
+```javascript
+//代码实现
+function countPrimes(n) {
+  let count = 0
+  //判断是否是质数
+  function isPrimes(num) {
+    for(let i = 2; i < Math.sqrt(num); i++) {
+      if( num % i === 0 ) {
+        return false
+      }
+    }
+    return true
+  }
+
+  for(let i = 2; i < n; i++) {
+    if(isPrimes(i)) {
+      count++
+    }
+  }
+  return count
+}
+```
+
+## 19、实现防抖和节流函数
+
+### 防抖函数：在给定的时间内，连续触发多次都会往后延迟，比如说你1秒内触发了1次，在0.8秒后又触发了一次，那么在第二次触发后就会往后延迟一秒钟执行
+### 节流函数：在给定的时间内不管触发多少次都会按第一次来的触发的来执行 
+
+**解题思路**：节流函数：利用时间搓来实现，定义一个上一次执行时间的标识，在每次执行时，获取当前时间，当两次间隔大于给定的间隔时则执行操作；防抖函数：利用定时器实现，定义一个定时器，当定时器已经存在时，清楚定时器，重新定时，当后续没有操作时，定时器的时间到了，就会执行操作了。
+
+**适用场景**：节流函数适用于表单的提交，滚动加载等场景；防抖函数适用于input输入，浏览器的resize、scroll等操作；
+
+```javascript
+//代码实现
+//防抖函数实现
+function debounce(fun, delay) {
+  let timer;
+  return function(...args) {
+    if(timer) clearTimerOut(timer)
+    
+    timer = setTimeOut(()=> {
+      fun.apply(this, args)
+    })
+  }
+}
+
+//节流函数实现
+function throttle(fun, delay) {
+  let lastRunTime = 0
+  return function(...args) {
+    let now = Date.now()
+    if(now - lastRunTime >= delay) {
+      fun.apply(this, arg)
+      lastRunTime = now
+    }
+  }
+}
+```
+
+## 20、实现一个shallowClone、deepClone
+
+### 深拷贝是指当我们复制一个引用类型时，我们修改被复制或复制出来的对象时，另一个对象不会被修改，我们复制引用类型时，是在堆内存只能开辟一个新内存了存储新对象，修正引用类型时，就可以彼此不受影响。一般来说，我们复制一个引用类型，我们只是复制该对象的一个指针，已复制的对象是指向被复制对象的存储地址。
+
+**解题思路**：实现一个深拷贝有很多中方法，一般用两种方法：1、使用JSON来将对象转为字符串再序列化这个字符串,但是这个方法没办法复制方法和正则，复制方法会返回null，而复制正则会返回null；2、是使用递归执行深拷贝；
+
+```javascript
+//代码实现
+//实现shallowClone，有很多中方式，直接赋值、使用Object.assign()、使用展开运输符...等
+let a = {name: 'ning', regExp: /\s/, siyName: function() {
+  console.log(this.name)
+}}
+
+let b = a; //使用=
+let c = Object.assign({}, a); //使用Object.assign()
+let d = {...a}; //使用...
+
+//实现deepClone，用JSON。缺点是无法拷贝方法和正则表达式，会返回null和{}
+function jsonDeepClone(obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+//实现deepClone，用递归，最简单的版本
+function recursionDeepClone1(obj) {
+  if(typeOf obj === 'object') {
+    let newObj = Array.isArray(obj) : [] : {}
+    for(const key in obj) {
+      newObj = recursionDeepClone1(obj[key])
+    }
+    return newObj
+  } else {
+    return obj
+  }
+}
+
+// 但我们观察这个代码，是实现了深拷贝功能，但是如果存在循环引用的值就会让递归爆栈从而造成死循环状态，造成这个原因主要是因为拷贝的对象间接或直接的引用了自己，如： 
+a.newA = a // 这个在a的属性里又存在一个属性跟a一样
+
+//解决这个问题我们可以使用map，用 key-value的方式存储循环引用的值，如果在内存中已经存在了这个对象，则直接取出来返回，如果没有则将值存入map中
+
+function recursionDeepClone2(obj, map = new Map()) {
+  if(typeOf obj === 'object') {
+    let newObj = Array.isArray(obj) ? [] : {}
+    if(map.get(obj)) {
+      return map.get(obj)
+    }
+    map.set(obj, newObj) 
+    for(const key in obj) {
+      newObj[key] = recursionDeepClone2(obj[key], map)
+    }
+    return newObj
+  } else {
+    return obj
+  }
+}
+
+//在这里我们使用map的来解决问题，但是这样又会存在一个问题，因为map是强引用的值，当我们需要拷贝的对象过于庞大的时候，就会消耗很大的内存，当我们不使用这个引用的时候还会存在于我们的内存中，如
+
+//这里我们创建了一个mapObj对象，当我们set了map后，将该值设为null，理论上我们需要在内存中清除这个maoObj,在mapTag中也应该消除，而map是强引用的，使用我们无法达到这个目的，从而让垃圾回收机制自动回收内存。
+let mapObj = { name: 'ning' };
+let mapTag = new Map()
+mapTag.set(mapObj, 'myName')
+mapObj = null 
+console.log(mapTag) // 会打印maoObj相关的内容
+
+//使用weakMap就可以解决这个问题
+let mapObjW = { name: 'ning' };
+let mapTagW = new WeakMap()
+mapTagW.set(mapObjW, 'myName')
+mapObjW = null 
+console.log(mapTagW) // 内存已经释放，对应空值
+
+//因此我们可以改map为weakMap
+
+function recursionDeepClone3(obj, map = new WeakMap()) {
+  //代码实现
+}
+
+//在上述中，因为很好的处理的深拷贝功能，但是还是会存在着其他问题，比如如果拷贝的对象存在Date、RegEx等对象，因此我们需要兼容这些对象
+
+//最终代码，虽然还是无法很完善的兼容所有问题，但是已经具体的实现了这个深拷贝功能
+function recursionDeepClone4(obj, map = new WeakMap()) {
+  if (obj === null) return obj;
+  if(obj instanceof Date) return new Date(obj)
+  if(obj instanceof RegEx) return new RegEx(obj)
+  if(typeOf obj === 'object') {
+    let newObj = Array.isArray(obj) ? [] : {}
+    if(map.get(obj)) {
+      return map.get(obj)
+    }
+    map.set(obj, newObj) 
+    for(const key in obj) {
+      newObj[key] = recursionDeepClone4(obj[key], map)
+    }
+    return newObj
+  } else {
+    return obj
+  }
+}
+```
 
 
