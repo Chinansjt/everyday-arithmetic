@@ -355,7 +355,7 @@ function mySqrt(x) {
 }
 ```
 
-## 14、手动实现一个trim方法
+## 14、手动实现一个 trim 方法
 
 ### 实现一个方法传入一个字符串，将首尾非字符串的字符给去掉
 
@@ -386,27 +386,27 @@ function handleWriteTrim(s) {
 
 ## 15、大数相加
 
-### 在JS中，一般的数字相加都可以用 + 号完成，但是当数字大到一定程度的时候，超出了JS的表示范围，那么用+相加就会超出数字的表示范围，因此可以用字符串代替，运用简单的加法得出结果。
+### 在 JS 中，一般的数字相加都可以用 + 号完成，但是当数字大到一定程度的时候，超出了 JS 的表示范围，那么用+相加就会超出数字的表示范围，因此可以用字符串代替，运用简单的加法得出结果。
 
 **解题思路**：定义两个指针和进位值，从字符串的尾部开始遍历，依次相加，当存在进位时，把进位加上。
 
 ```javascript
 //代码实现
-function addString(num1,num2) {
-  let i = num1.length - 1
-  let j = num2.length - 1
-  let carry = 0
-  let result = ''
-  while(i >= 0 || j >= 0 || carry >= 1) {
-      const digit1 = num1[i] ? parseInt(num1[i]) : 0
-      const digit2 = num2[j] ? parseInt(num2[j]) : 0
-      const sum = digit1 + digit2 + carry
-      carry = Math.floor(sum / 10)
-      result = Math.floor(sum % 10) + result
-      i--
-      j--
+function addString(num1, num2) {
+  let i = num1.length - 1;
+  let j = num2.length - 1;
+  let carry = 0;
+  let result = "";
+  while (i >= 0 || j >= 0 || carry >= 1) {
+    const digit1 = num1[i] ? parseInt(num1[i]) : 0;
+    const digit2 = num2[j] ? parseInt(num2[j]) : 0;
+    const sum = digit1 + digit2 + carry;
+    carry = Math.floor(sum / 10);
+    result = Math.floor(sum % 10) + result;
+    i--;
+    j--;
   }
-  return result
+  return result;
 }
 ```
 
@@ -414,122 +414,124 @@ function addString(num1,num2) {
 
 ### 请你编写一个函数，它接收一个 多维数组 arr 和它的深度 n ，并返回该数组的 扁平化 后的结果。多维数组 是一种包含整数或其他 多维数组 的递归数据结构。
 
-**解题思路**：扁平化数组有很多种方法，最简单的方法是使用Array的内置flat函数进行扁平化数组，flat接受两个参数，第一个参数是需要扁平化的数组，第二个参数是需要扁平化的深度，并返回已经扁平化的数组。另一种方法是使用递归的方法，在递归中循环遍历传入的数组，判断当前项是否是数组，如果是数组并且深度不大于指定深度则继续递归调用。否则将当前项push到结果集中
+**解题思路**：扁平化数组有很多种方法，最简单的方法是使用 Array 的内置 flat 函数进行扁平化数组，flat 接受两个参数，第一个参数是需要扁平化的数组，第二个参数是需要扁平化的深度，并返回已经扁平化的数组。另一种方法是使用递归的方法，在递归中循环遍历传入的数组，判断当前项是否是数组，如果是数组并且深度不大于指定深度则继续递归调用。否则将当前项 push 到结果集中
 
 ```javascript
 //代码实现
 function flat(arr, n) {
-  const result = []
+  const result = [];
 
   function flatArray(arrs, deep) {
-    for(let i = 0; i < arrs.length; i++) {
-      if(Array.isArray(arrs[i]) && deep < n) {
-        flatArray(arrs[i], deep + 1)
+    for (let i = 0; i < arrs.length; i++) {
+      if (Array.isArray(arrs[i]) && deep < n) {
+        flatArray(arrs[i], deep + 1);
       } else {
-        result.push(arrs[i])
+        result.push(arrs[i]);
       }
     }
   }
-  flatArray(arr, 0)
-  return result
+  flatArray(arr, 0);
+  return result;
 }
 ```
+
 ## 17、千分位分割符
 
 ### 给你一个整数 n，请你每隔三位添加点（即 "." 符号）作为千位分隔符，并将结果以字符串格式返回。
 
-**解题思路**：定义一个计数器，然后将整数n转为字符串再遍历它，每次遍历都将计算器加一，当计算器达到3是，表明已经是千分位了，将 . push到结果集中，在将计算器重置为0
+**解题思路**：定义一个计数器，然后将整数 n 转为字符串再遍历它，每次遍历都将计算器加一，当计算器达到 3 是，表明已经是千分位了，将 . push 到结果集中，在将计算器重置为 0
 
 ```javascript
 //代码实现
 function thousandSeparator(n) {
-  const str = n.toString()
-  const result = []
+  const str = n.toString();
+  const result = [];
 
-  for(let i = str.length - 1, count = 0; i > 0; i--) {
-    if(count === 3) {
-      result.unshift('.')
-      count = 1
+  for (let i = str.length - 1, count = 0; i > 0; i--) {
+    if (count === 3) {
+      result.unshift(".");
+      count = 1;
     } else {
-      count++
+      count++;
     }
-    result.unshift(str[i])
+    result.unshift(str[i]);
   }
 
-  return result.join('')
-} 
+  return result.join("");
+}
 ```
 
 ## 18、质数（素数）
 
-### 给一个整数n，找出这个整数内的所有质数
+### 给一个整数 n，找出这个整数内的所有质数
 
-**解题思路**：使用暴力解法，定义一个方法isPrimes判断一个数是否是质数，然后循环n，在n的循环中调用isPrimes方法，当返回true时则质数的数量+1
+**解题思路**：使用暴力解法，定义一个方法 isPrimes 判断一个数是否是质数，然后循环 n，在 n 的循环中调用 isPrimes 方法，当返回 true 时则质数的数量+1
 
 ```javascript
 //代码实现
 function countPrimes(n) {
-  let count = 0
+  let count = 0;
   //判断是否是质数
   function isPrimes(num) {
-    for(let i = 2; i < Math.sqrt(num); i++) {
-      if( num % i === 0 ) {
-        return false
+    for (let i = 2; i < Math.sqrt(num); i++) {
+      if (num % i === 0) {
+        return false;
       }
     }
-    return true
+    return true;
   }
 
-  for(let i = 2; i < n; i++) {
-    if(isPrimes(i)) {
-      count++
+  for (let i = 2; i < n; i++) {
+    if (isPrimes(i)) {
+      count++;
     }
   }
-  return count
+  return count;
 }
 ```
 
 ## 19、实现防抖和节流函数
 
-### 防抖函数：在给定的时间内，连续触发多次都会往后延迟，比如说你1秒内触发了1次，在0.8秒后又触发了一次，那么在第二次触发后就会往后延迟一秒钟执行
-### 节流函数：在给定的时间内不管触发多少次都会按第一次来的触发的来执行 
+### 防抖函数：在给定的时间内，连续触发多次都会往后延迟，比如说你 1 秒内触发了 1 次，在 0.8 秒后又触发了一次，那么在第二次触发后就会往后延迟一秒钟执行
+
+### 节流函数：在给定的时间内不管触发多少次都会按第一次来的触发的来执行
 
 **解题思路**：节流函数：利用时间搓来实现，定义一个上一次执行时间的标识，在每次执行时，获取当前时间，当两次间隔大于给定的间隔时则执行操作；防抖函数：利用定时器实现，定义一个定时器，当定时器已经存在时，清楚定时器，重新定时，当后续没有操作时，定时器的时间到了，就会执行操作了。
 
-**适用场景**：节流函数适用于表单的提交，滚动加载等场景；防抖函数适用于input输入，浏览器的resize、scroll等操作；
+**适用场景**：节流函数适用于表单的提交，滚动加载等场景；防抖函数适用于 input 输入，浏览器的 resize、scroll 等操作；
 
 ```javascript
 //代码实现
 //防抖函数实现
 function debounce(fun, delay) {
   let timer;
-  return function(...args) {
-    if(timer) clearTimerOut(timer)
-    
-    timer = setTimeOut(()=> {
-      fun.apply(this, args)
-    })
-  }
+  return function (...args) {
+    if (timer) clearTimerOut(timer);
+
+    timer = setTimeOut(() => {
+      fun.apply(this, args);
+    });
+  };
 }
 
 //节流函数实现
 function throttle(fun, delay) {
-  let lastRunTime = 0
-  return function(...args) {
-    let now = Date.now()
-    if(now - lastRunTime >= delay) {
-      fun.apply(this, arg)
-      lastRunTime = now
+  let lastRunTime = 0;
+  return function (...args) {
+    let now = Date.now();
+    if (now - lastRunTime >= delay) {
+      fun.apply(this, arg);
+      lastRunTime = now;
     }
-  }
+  };
 }
 ```
 
-## 20、实现一个shallowClone、deepClone
+## 20、实现一个 shallowClone、deepClone
 
 ### 深拷贝是指当我们复制一个引用类型时，我们修改被复制或复制出来的对象时，另一个对象不会被修改，我们复制引用类型时，是在堆内存只能开辟一个新内存了存储新对象，修正引用类型时，就可以彼此不受影响。一般来说，我们复制一个引用类型，我们只是复制该对象的一个指针，已复制的对象是指向被复制对象的存储地址。
 
-**解题思路**：实现一个深拷贝有很多中方法，一般用两种方法：1、使用JSON来将对象转为字符串再序列化这个字符串,但是这个方法没办法复制方法和正则，复制方法会返回null，而复制正则会返回null；2、是使用递归执行深拷贝；
+**解题思路**：实现一个深拷贝有很多中方法，一般用两种方法：1、使用 JSON 来将对象转为字符串再序列化这个字符串,但是这个方法没办法复制方法和正则，复制方法会返回 null，而复制正则会返回 null；2、是使用递归执行深拷贝；
 
 ```javascript
 //代码实现
@@ -552,7 +554,7 @@ function recursionDeepClone1(obj) {
   if(typeOf obj === 'object') {
     let newObj = Array.isArray(obj) : [] : {}
     for(const key in obj) {
-      newObj = recursionDeepClone1(obj[key])
+      newObj[key] = recursionDeepClone1(obj[key])
     }
     return newObj
   } else {
@@ -560,7 +562,7 @@ function recursionDeepClone1(obj) {
   }
 }
 
-// 但我们观察这个代码，是实现了深拷贝功能，但是如果存在循环引用的值就会让递归爆栈从而造成死循环状态，造成这个原因主要是因为拷贝的对象间接或直接的引用了自己，如： 
+// 但我们观察这个代码，是实现了深拷贝功能，但是如果存在循环引用的值就会让递归爆栈从而造成死循环状态，造成这个原因主要是因为拷贝的对象间接或直接的引用了自己，如：
 a.newA = a // 这个在a的属性里又存在一个属性跟a一样
 
 //解决这个问题我们可以使用map，用 key-value的方式存储循环引用的值，如果在内存中已经存在了这个对象，则直接取出来返回，如果没有则将值存入map中
@@ -571,7 +573,7 @@ function recursionDeepClone2(obj, map = new Map()) {
     if(map.get(obj)) {
       return map.get(obj)
     }
-    map.set(obj, newObj) 
+    map.set(obj, newObj)
     for(const key in obj) {
       newObj[key] = recursionDeepClone2(obj[key], map)
     }
@@ -587,14 +589,14 @@ function recursionDeepClone2(obj, map = new Map()) {
 let mapObj = { name: 'ning' };
 let mapTag = new Map()
 mapTag.set(mapObj, 'myName')
-mapObj = null 
+mapObj = null
 console.log(mapTag) // 会打印maoObj相关的内容
 
 //使用weakMap就可以解决这个问题
 let mapObjW = { name: 'ning' };
 let mapTagW = new WeakMap()
 mapTagW.set(mapObjW, 'myName')
-mapObjW = null 
+mapObjW = null
 console.log(mapTagW) // 内存已经释放，对应空值
 
 //因此我们可以改map为weakMap
@@ -610,12 +612,12 @@ function recursionDeepClone4(obj, map = new WeakMap()) {
   if (obj === null) return obj;
   if(obj instanceof Date) return new Date(obj)
   if(obj instanceof RegEx) return new RegEx(obj)
-  if(typeOf obj === 'object') {
+  if(typeof obj === 'object') {
     let newObj = Array.isArray(obj) ? [] : {}
     if(map.get(obj)) {
       return map.get(obj)
     }
-    map.set(obj, newObj) 
+    map.set(obj, newObj)
     for(const key in obj) {
       newObj[key] = recursionDeepClone4(obj[key], map)
     }
@@ -626,4 +628,149 @@ function recursionDeepClone4(obj, map = new WeakMap()) {
 }
 ```
 
+## 21、手写实现 Promise.all()和 Promise.race()
 
+### Promise.all()和 Promise.race() 是 promise 异步编程的一个方法，接受一个可迭代的数组，数组的项是一个 promise 的实例；二者的区别在于，all 是必须等数组里的 promise 实例必须执行完并且都是 resolve 状态才会执行，返回的值是一个数组，对应每一项的 resolve 值，当遇到任意一项是 reject 时，则停止执行，返回 reject 的值；而 race 则是当其中的实例有一个最先完成的状态，不管是 resolve 还是 reject 都会返回其中的值。
+
+```javascript
+//代码实现
+Promise.all = function (iterators) {
+  return new Promise((resolve, reject) => {
+    if (!iterators || iterators.length === 0) {
+      resolve([]);
+    }
+    let result = [];
+    let count = 0;
+    for (let item of iterators) {
+      Promise.resolve(item)
+        .then((value) => {
+          result.push(value);
+          if (++count === iterators.length) {
+            resolve(result);
+          }
+        })
+        .catch((value) => {
+          reject(vale);
+        });
+    }
+  });
+};
+
+Promise.race = function (iterators) {
+  return new Promise((resolve, reject) => {
+    if (iterators.length === 0) {
+      return;
+    }
+    for (let item of iterators) {
+      Promise.resolve(item).then(
+        (value) => {
+          resolve(value);
+        },
+        (value) => {
+          reject(value); //这里使用第二个参数调用reject是因为执行了当前这个promise实例，就能直接知道实例的状态，如果是放在catch中获取，就会造成要等待其他的实例执行完成才会执行，可能会造成结果不准确。
+        }
+      );
+    }
+  });
+};
+
+let proArray = [Promise.resolve(1), Promise.reject(2), Promise.resolve(3)];
+Promise.all(proArray).then((res) => {
+  console.log(res); // Uncaught (in promise) 2
+});
+Promise.all(proArray).then((res) => {
+  console.log(res); // 1
+});
+```
+
+## 22、手写实现 new、bind、call、apply
+
+### new 是用于调用构造函数的，当用 new 调用的函数自动识别为构造函数。返回一个构造函数的实例。内部执行步骤如下：
+
+> - 创建一个新的空对象
+> - 给这个新对象的原型设置为传入构造函数的原型
+> - 绑定新对象的 this 为构造函数的 this，并调用构造函数
+> - 如果构造函数返回一个对象则返回构造函数的对象，如果返回的是非对象则返回新创建的对象；这一步是因为如果在构造函数内部显示的返回一个对象，则 new 中直接返回这个对象，否则就通过 new 创造一个新对象
+
+```javascript
+//代码实现
+function myNew(Constructor, ...args) {
+  let obj = {};
+  obj.__proto__ = Constructor.prototype;
+  let result = Constructor.apply(obj, args);
+
+  return typeof result === "object" && typeof result !== "null" ? result : obj;
+}
+```
+
+### bind 用于绑定 this 的指向，更改函数的上下文，执行 bind 后函数并不会立即执行，需要再次调用。
+
+```javascript
+//用法实例
+let person = {
+  name: "ning",
+  sayName: function () {
+    console.log(`my name is ${this.name}`);
+  },
+};
+//这里调用sayName，里面的this是指向person的，因为this的指向是在调用时确定的，谁调用它this就指向谁。这里是person调用它，所以指向person。
+person.sayName(); // my name is ning
+//这用调用sayName，里面的this是指向window，因为这这里并不是属于person调用它，而是它以一个属性传递给setTimeout，等同于
+// let fun = person.sayName, 然后调用fun，而调用fun是全局window调用的。
+setTimeout(person.sayName, 1000); // my name is undefine
+let bindSay = person.sayName.bind(person); //将this绑定为person
+setTimeout(bindSay, 1000); // my name is ning
+```
+
+#### 手写实现步骤
+
+> - 返回一个函数
+> - 返回的函数可以有参数
+> - 确保正确的 this 上下文
+> - 考虑到使用 new 构造函数时的情况
+
+```javascript
+//代码实现
+Function.prototype.myBind = function (context, ...args1) {
+  let that = this; //保存内部的this
+  //args2是在调用的时候可能会传入参数
+  function Bound(...args2) {
+    // 当是构造函数调用时，this 指向实例，that指向绑定的函数，结果为true，将绑定函数的this绑定为实例的this
+    // 而当是作为普通函数调用时，this指向window，that指向绑定的函数，结果为false，将绑定函数的this绑定为传入的context上下文。
+    let isNew = this instanceof that;
+    return that.apply(isNew ? this : context, args1.concat(args2));
+  }
+  //Temp方法的主要作用就是重新创建一个新的、干净的原型复制给Bound，这样在原方法改变的情况下，调用的不好出现问题。
+  //定义一个新方法，用于继承原型。这里，我们定义了一个临时的构造函数 Temp。它的目的是仅仅作为一个桥梁，将原始函数的原型链接到绑定函数的原型上，而不会调用原始函数。
+  function Temp() {}
+  // 这里，我们将 Temp 的原型设置为原始函数（也就是 bind 方法被调用的函数）的原型。this 在这里指的是我们想要绑定的原始函数。
+  Temp.prototype = this.prototype;
+  //我们创建了 Temp 的一个新实例，并将这个新实例作为绑定函数（Bound）的原型。这意味着，现在，通过绑定函数创建的任何新对象都将从原始函数的原型继承属性。
+  Bound.prototype = new Temp();
+  // 这种方法的好处是，我们没有直接创建原始函数的新实例作为绑定函数的原型，因为那样可能会有不必要的副作用（因为原始函数的构造函数代码会被执行）。通过使用空的 Temp 函数，我们只是创建了一个原型链，而不会执行任何额外的代码。
+  return Bound;
+};
+```
+
+### call和apply都是用于绑定this的指向，只是接收的参数不同。手写实现如下(apply一样实现，只是调用时传入的参数格式不一样)
+> * 获取传入的上下文，如果为null或者undefine则指定为window全局对象
+> * 用Symbol标识一个唯一的方法，目标是不会修改或者覆盖原本传入的上下文this对象
+> * 然后执行该方法，并获取返回值。在这个内部实现中，`this`是指向调用它的函数，也就是说是等于调用它的函数，比如 `fun.call()`, 这里的`this`就是等于`fun`的，使用如果是`this()`其实可以视为`fun()`调用
+> * 返回返回值
+
+```javascript
+//代码实现
+Function.prototype.myCall = function(context, ...args) {
+  if(typeof this !== 'function' ) {
+    throw new TypeError('Called object is not a function');
+  }
+  context = context || window
+
+  let funSymbol = Symbol('fun')
+  context[funSymbol] = this
+
+  let result = context[funSymbol](...args)
+  delete context[funSymbol]
+  return result
+}
+```
