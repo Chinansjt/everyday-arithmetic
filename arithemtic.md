@@ -679,11 +679,65 @@ Promise.all(proArray).then((res) => {
   console.log(res); // Uncaught (in promise) 2
 });
 Promise.all(proArray).then((res) => {
-  console.log(res); // 1
+  console.log(res); // [1,2,3]
 });
 ```
+## 22、手写实现Promise
+### 实现了最基础的版本，没有解决then回调地狱的问题
 
-## 22、手写实现 new、bind、call、apply
+```javascript
+//代码实现
+class MyPromise {
+  constructor(executer) {
+    this.state = 'pending'
+    this.value = null
+    this.reason = null
+    this.onResolves = []
+    this.onRejects = []
+
+    let resolve = (value) => {
+      if(this.state === 'pending') {
+        this.state = 'finished'
+        this.value = value
+        this.onResolves.foreach((fun) => fun(value))
+      }
+    }
+    let reject = (value) => {
+      if(this.state === 'pending') {
+        this.state = 'rejected'
+        this.reason = value
+        this.onRejects.foreach(fun => fun(value))
+      }
+    }
+    try {
+      executer(resolve, reject)
+    } catch(error) {
+      reject(error)
+    }
+  }
+  then(onResolveFun,onRejectFun) {
+    if(typeof onResolveFun === 'function' && this.state === 'finished') {
+      onResolveFun(this.value)
+    }
+    if(typeof onRejectFun === 'function' && this.state === 'rejected') {
+      onRejectFun(this.reason)
+    }
+    if(this.state === 'pending') {
+      if(typeof onResolveFun === 'function') {
+        this.onResolves.push(onResolveFun)
+      }
+      if(typeof onRejectFun === 'function') {
+        this.onRejects.push(onRejectFun)
+      }
+    }
+  }
+  catch() {
+    return this.then(null, onRejectFun)
+  }
+}
+```
+
+## 23、手写实现 new、bind、call、apply
 
 ### new 是用于调用构造函数的，当用 new 调用的函数自动识别为构造函数。返回一个构造函数的实例。内部执行步骤如下：
 
@@ -772,5 +826,29 @@ Function.prototype.myCall = function(context, ...args) {
   let result = context[funSymbol](...args)
   delete context[funSymbol]
   return result
+}
+```
+
+## 24、js控制并发数
+```javascript
+//代码实现
+async function asyncPool(limit, arrayFun) {
+  let resolve = []
+  let executing = []
+  for(let item of arrayFun) {
+    const p = item().then((val) => {
+      resolve.push(val)
+      executing.splice(executing.indexOf(p), 1)
+    })
+    executing.push(p)
+    //当执行的队列任务数超过并发控制数时，并发控制执行
+    if(executing.length >= limit) {
+      //最先执行完成的继续执行
+      await Promise.race(executing)
+    }
+  }
+  //等待所有的任务执行成功
+  await Promise.all(executing)
+  return resolve
 }
 ```
