@@ -3,41 +3,43 @@
 ### 这里记录我在学习过程中记的笔记，方便我日后复习巩固
 
 # 1、JS 数组
-* **push()**：在数组的尾部插入一个或多个元素，返回插入后数组的长度。
-* **pop()**：在数组的尾部删除一个元素，返回被删除的元素。
-* **shift()**：在数组的头部删除一个元素，返回被删除的元素。
-* **unshift()**：在数组的头部插入一个或多个元素，返回插入后数组的长度
-* **concat()**：组合数组，返回一个新数组。
-* **join()**：拼接数组。
-* **fill()**：填充数组。
-* **forEach()**：对数组执行一个for循环，无返回操作。
-* **map()**：对数组执行一次遍历，返回在执行方法过程中返回的元素集。
-* **filter()**：对数组执行过滤操作，返回过滤条件中为true的元素。
-* **some()**：对数组执行遍历操作，当存在至少一项是满足特定条件的时候，返回true
-* **every()**：对数组执行遍历操作，当所有项都满足特定条件的时候，返回true
-* **find()**：从数组头部执行遍历操作，当发现第一项满足特定条件的时候，返回这个元素。
-* **findIndex()**：从数组头部执行遍历操作，当发现第一项满足特定条件的时候，返回这个的索引
-* **isArray()**：判断是否是数组。
-* **splice()**：对数组进行添加、删除、替换操作，返回被删除的元素。
-* **slice()**：对数组进行截取操作，返回截取的元素。
-* **includes()**：判断数组是否包含给定的项。
-* **indexOf()**：返回数组第一个匹配到的索引。
-* **lastIndexOf()**：返回数组最后一个匹配到的索引。
-* **sort()**：对数组进行排序，默认情况下按字母顺序进行排序，但是如果传入一个方法，可以根据方法返回的值继续排序。返回1排在后面，返回-1排在前面，返回0排序不变。
-* **reverse()**：对数组进行翻转操作。
-* **reduce()**：对数组从左到右进行累加操作，接受两个参数，第一个是一个回调方法，第二个可选，表示累加的初始值，不传默认数组第一项。
-* **reduceRight()**：对数组从右到左进行累加操作。
->其中会改变原数组的方法有push、pop、shift、unshift、splice、reverse、sort。
+
+- **push()**：在数组的尾部插入一个或多个元素，返回插入后数组的长度。
+- **pop()**：在数组的尾部删除一个元素，返回被删除的元素。
+- **shift()**：在数组的头部删除一个元素，返回被删除的元素。
+- **unshift()**：在数组的头部插入一个或多个元素，返回插入后数组的长度
+- **concat()**：组合数组，返回一个新数组。
+- **join()**：拼接数组。
+- **fill()**：填充数组。
+- **forEach()**：对数组执行一个 for 循环，无返回操作。
+- **map()**：对数组执行一次遍历，返回在执行方法过程中返回的元素集。
+- **filter()**：对数组执行过滤操作，返回过滤条件中为 true 的元素。
+- **some()**：对数组执行遍历操作，当存在至少一项是满足特定条件的时候，返回 true
+- **every()**：对数组执行遍历操作，当所有项都满足特定条件的时候，返回 true
+- **find()**：从数组头部执行遍历操作，当发现第一项满足特定条件的时候，返回这个元素。
+- **findIndex()**：从数组头部执行遍历操作，当发现第一项满足特定条件的时候，返回这个的索引
+- **isArray()**：判断是否是数组。
+- **splice()**：对数组进行添加、删除、替换操作，返回被删除的元素。
+- **slice()**：对数组进行截取操作，返回截取的元素。
+- **includes()**：判断数组是否包含给定的项。
+- **indexOf()**：返回数组第一个匹配到的索引。
+- **lastIndexOf()**：返回数组最后一个匹配到的索引。
+- **sort()**：对数组进行排序，默认情况下按字母顺序进行排序，但是如果传入一个方法，可以根据方法返回的值继续排序。返回 1 排在后面，返回-1 排在前面，返回 0 排序不变。
+- **reverse()**：对数组进行翻转操作。
+- **reduce()**：对数组从左到右进行累加操作，接受两个参数，第一个是一个回调方法，第二个可选，表示累加的初始值，不传默认数组第一项。
+- **reduceRight()**：对数组从右到左进行累加操作。
+  > 其中会改变原数组的方法有 push、pop、shift、unshift、splice、reverse、sort。
+
 # 2、JS 对象
 
 ## 类型检测
-**_解释_**：js类型检测指是判断一个变量的类型及构造方式，分为两种类型：基础类型和引用类型；其中基础类型包括String、Number、Boolean、undefine、null、symbol，引用类型包括Object、Function、Array。
 
-1. **typeof**：一般用于检测基础类型，检测Object、null、array都会返回 'object'，检测Function会返回‘function’，
+**_解释_**：js 类型检测指是判断一个变量的类型及构造方式，分为两种类型：基础类型和引用类型；其中基础类型包括 String、Number、Boolean、undefine、null、symbol，引用类型包括 Object、Function、Array。
+
+1. **typeof**：一般用于检测基础类型，检测 Object、null、array 都会返回 'object'，检测 Function 会返回‘function’，
 2. **instanceof**：用于检测引用类型，检测是否属于原型链上。
-3. **contractor**：每个对象都有一个constructor属性，指向该对象的构造函数
+3. **contractor**：每个对象都有一个 constructor 属性，指向该对象的构造函数
 4. **Object.prototype.toString.call()**：更精确的判断变量的类型，可以精确判断是哪一种类型。
-
 
 ## 对象创建
 
@@ -102,207 +104,208 @@
 
 **_解释_**：JS 继承是一种机制，允许我们用一个对象继承另一个对象的属性和方法，这使得可以共用现有代码。同时允许我们在子类中添加或修改继承到的方法和属性。
 
-1. **原型链继承**：在原型链中，子对象的 prototype 指向父类的 prototype，父类的 prototype 指向祖父的 prototype，以此类推！原型链的最高级指向 Object.prototype，值为 null。而原型链继承就是运用了这个机制，子类通过 prototype 继承父类的属性和方法，所有实例共享原型链上的属性和方法。
+1.  **原型链继承**：在原型链中，子对象的 prototype 指向父类的 prototype，父类的 prototype 指向祖父的 prototype，以此类推！原型链的最高级指向 Object.prototype，值为 null。而原型链继承就是运用了这个机制，子类通过 prototype 继承父类的属性和方法，所有实例共享原型链上的属性和方法。
 
-   > 优点：通过原型链继承，所有属性共享原型链上的方法和属性
+    > 优点：通过原型链继承，所有属性共享原型链上的方法和属性
 
-   > 缺点：由于是共享原型链的属性和方法，一但修改原型链的属性或方法，会对实例造成影响
+    > 缺点：由于是共享原型链的属性和方法，一但修改原型链的属性或方法，会对实例造成影响
 
-   ```javascript
-   // 原型链继承
-   function Parent() {
-     this.name = "ning";
-     this.nickName = ["ning1", "ning2"];
-   }
-
-   Parent.prototype.sayHi = function () {
-     console.log(`Hi ${this.name}`);
-   };
-
-   function Child(age) {
-     this.age = age;
-   }
-
-   Child.prototype = new Parent(); // 原型链继承
-   let instance1 = new Child(2);
-   instance1.sayHi(); // Hi ning
-
-   //缺点就是共享原型链的方法，会造成属性污染
-   let instance2 = new Child(3);
-   instance2.nickName.push("ning3");
-
-   console.log(instance1.nickName); // ['ning1', 'ning2', 'ning3']
-   ```
-
-2. **构造函数继承**：子类通过构造函数调用父类的构造函数，以继承父类的属性
-   > 优点：不涉及原型链，只涉及继承，从而不会存在状态共享问题；可以传递参数给父类，更灵活；
-   ```javascript
-   function Parent(name) {
-     this.name = name;
-     this.nickName = ["ning1", "ning2"];
-   }
-   function Child(name, age) {
-     this.age = age;
-     Parent.call(this, name);
-   }
-   let instance1 = new Child("ning", 2);
-   let instance2 = new Child("yu", 3);
-   instance1.nickName.push("ning3");
-   //实例之间的属性不会污染
-   console.log(instance1.nickName); //['ning1', 'ning2', 'ning3']
-   console.log(instance2.nickName); //['ning1', 'ning2']
-   ```
-   > 缺点：由于不使用原型链，使用无法继承原型链上的属性和方法；只能继承父类原型的属性，不能继承父类实例的方法；每个实例都保存父类实例函数的副本，无法实现共用，影响性能！
-   ```javascript
-   function Parent(name) {
-     this.name = name;
-     this.nickName = ["ning1", "ning2"];
-   }
-   Parent.prototype.sayHi = function () {
-     console.log(`Hi ${this.name}`);
-   };
-   function Child(name, age) {
-     this.age = age;
-     Parent.call(this, name);
-   }
-   let instance1 = new Child("ning", 2);
-   //无法继承父对象的方法
-   instance1.sayHi(); //TypeError: instance1.sayHi is not a function
-   ```
-3. **组合式继承**：解决构造函数继承和原型链继承存在的问题，结合这两种继承的优点。在子类的构造函数调用父类的构造函数，并且让子类继承父类的原型链。
-
-   > 优点：结合构造函数和原型链继承的优点，既能继承父对象的属性又能继承原型链的属性，同时还不会存在属性污染的问题。
-
-   > 缺点：父类构造函数被调用两次，存在性能问题；
-
-   ```javascript
-   function Parent(name) {
-     this.name = name;
-     this.nickName = ["ning1", "ning2"];
-   }
-   Parent.prototype.sayHi = function () {
-     console.log(`Hi ${this.name}`);
-   };
-   function Child(name, age) {
-     this.age = age;
-     Parent.call(this, name); //第一次调用Parent
-   }
-   Child.prototype = new Parent(); //第二次调用Parent
-   Child.prototype.constructor = Child;
-
-   let instance1 = new Child("ning", 2);
-   let instance2 = new Child("yu", 3);
-   instance1.nickName.push("ning3");
-   //实例之间的属性不会污染
-   console.log(instance1.nickName); //['ning1', 'ning2', 'ning3']
-   console.log(instance2.nickName); //['ning1', 'ning2']
-   //可以继承原型的方法
-   instance1.sayH1(); //Hi ning
-   console.log(instance1 instanceof Parent); // true
-   ```
-
-4. **原型继承**： 通过一个空对象为中介，直接将传入的对象做为这个空对象的 prototype，然后 new 返回这个空对象
-
-   > 优点：可以继承多个对象的属性和方法，支持多重继承；相对比较简单，有现成的方法 Object.create()可以实现
-
-   > 缺点：子对象共享父对象的属性，可能存在篡改属性；并且无法传递参数给父对象的构造函数
-
-   ```javascript
-   function object(obj) {
-     function F() {}
-     F.prototype = obj;
-     return new F();
-   }
-   let parent = {
-     name: "ning",
-     nickName: ["ning1", "ning2"],
-     sayHi: function () {
-       console.log(`hi! ${this.name}`);
-     },
-   };
-   let child1 = object(parent); //等同于Object.create()方法
-   let child2 = object(parent);
-   child1.sayHi(); // hi! ning
-   //可以串改父对象的属性
-   child1.name = "yu";
-   child1.sayHi(); //hi! yu
-   //单共享的不受影响
-   child2.sayHi(); //hi！ning
-   ```
-
-5. **寄生式继承**：在原型继承的基础上修改，在一个方法中封装继承的过程，达到增强对象的目的，然后返回它。
-
-   > 优点：可以在不修改原有对象的情况下向其添加属性和方法。
-
-   > 缺点：不能使用 instanceof 方法，比较难追本溯源；
-
-   ```javascript
-   function inheritObj(obj) {
-     let newObj = Object.create(obj);
-     //根据需求增强对象
-     newObj.sayName = function () {
-       console.log(`my name is ${this.name}`);
-     };
-     return newObj;
-   }
-   let parent = {
-     name: "ning",
-     nickName: ["ning1", "ning2"],
-     sayHi: function () {
-       console.log(`hi! ${this.name}`);
-     },
-   };
-   let child1 = inheritObj(parent);
-   //调用继承自父对象的方法
-   child1.sayHi(); //h1 ning
-   //调用新添加的方法
-   child1.sayName(); //my name is ning
-   ```
-
-6. **寄生组合式继承**：和组合式继承类似，结合了构造函数和寄生式继承的优点。核心思想是在创建子类构造函数时，不调用父类构造函数的实例，而是使用原型链继承，然后在寄生式继承的基础上，将父类的原型复制给子类的原型。这就避免了调用两次父类构造函数。寄生组合式继承是当下库使用最多的方法，结合了其他继承，将其取其精华，去其糟粕！
-
-   > 优点：避免了调用两次父了构造函数，提升了性能；保留了原型链，可以使用 instanceof 追本溯源；
-   > 缺点：相对其他继承来说比较复杂；
-
-   ```javascript
-   function inheritPrototype(child, parent) {
-     let prototype = Object.create(parent.prototype); //使用原型继承父类的原型
-     parent.constructor = child; //重置子类构造函数的引用
-     child.prototype = prototype; //子类原型设置为父类原型的副本
-   }
-
-   function Parent(name) {
-     this.name = name;
-     this.nickName = ["ning1", "ning2"];
-   }
-   Parent.prototype.sayHi = function () {
-     console.log(`Hi ${this.name}`);
-   };
-   function Child(name, age) {
-     this.age = age;
-     Parent.call(this, name); //只调用了一次父类构造函数，提升了性能
-   }
-   inheritPrototype(Child, Parent);
-   Child.prototype.sayNme = function () {
-     console.log(`my name is ${this.name}`);
-   };
-
-   let instance1 = new Child("ning", 2);
-   let instance2 = new Child("yu", 3);
-   instance1.nickName.push("ning3");
-   //修改原型属性，实例间不受影响
-   console.log(instance1.nickName); //['ning1', 'ning2', 'ning3']
-   console.log(instance2.nickName); //['ning1', 'ning2']
-   //调用父类的方法
-   instance1.sayHi(); //Hi ning
-   //调用子类的方法
-   instance1.sayNme(); //my name is ning
-   //可以追本溯源
-   console.log(instance1 instanceof Parent); //true
-   ```
-
-7. **Class 类继承**：运用 es6 的类继承，可以更简单直观的定义继承关系
     ```javascript
+    // 原型链继承
+    function Parent() {
+      this.name = "ning";
+      this.nickName = ["ning1", "ning2"];
+    }
+
+    Parent.prototype.sayHi = function () {
+      console.log(`Hi ${this.name}`);
+    };
+
+    function Child(age) {
+      this.age = age;
+    }
+
+    Child.prototype = new Parent(); // 原型链继承
+    let instance1 = new Child(2);
+    instance1.sayHi(); // Hi ning
+
+    //缺点就是共享原型链的方法，会造成属性污染
+    let instance2 = new Child(3);
+    instance2.nickName.push("ning3");
+
+    console.log(instance1.nickName); // ['ning1', 'ning2', 'ning3']
+    ```
+
+2.  **构造函数继承**：子类通过构造函数调用父类的构造函数，以继承父类的属性
+    > 优点：不涉及原型链，只涉及继承，从而不会存在状态共享问题；可以传递参数给父类，更灵活；
+    ```javascript
+    function Parent(name) {
+      this.name = name;
+      this.nickName = ["ning1", "ning2"];
+    }
+    function Child(name, age) {
+      this.age = age;
+      Parent.call(this, name);
+    }
+    let instance1 = new Child("ning", 2);
+    let instance2 = new Child("yu", 3);
+    instance1.nickName.push("ning3");
+    //实例之间的属性不会污染
+    console.log(instance1.nickName); //['ning1', 'ning2', 'ning3']
+    console.log(instance2.nickName); //['ning1', 'ning2']
+    ```
+    > 缺点：由于不使用原型链，使用无法继承原型链上的属性和方法；只能继承父类原型的属性，不能继承父类原型的方法；每个实例都保存父类实例函数的副本，无法实现共用，影响性能！
+    ```javascript
+    function Parent(name) {
+      this.name = name;
+      this.nickName = ["ning1", "ning2"];
+    }
+    Parent.prototype.sayHi = function () {
+      console.log(`Hi ${this.name}`);
+    };
+    function Child(name, age) {
+      this.age = age;
+      Parent.call(this, name);
+    }
+    let instance1 = new Child("ning", 2);
+    //无法继承父对象的方法
+    instance1.sayHi(); //TypeError: instance1.sayHi is not a function
+    ```
+3.  **组合式继承**：解决构造函数继承和原型链继承存在的问题，结合这两种继承的优点。在子类的构造函数调用父类的构造函数，并且让子类继承父类的原型链。
+
+    > 优点：结合构造函数和原型链继承的优点，既能继承父对象的属性又能继承原型链的属性，同时还不会存在属性污染的问题。
+
+    > 缺点：父类构造函数被调用两次，存在性能问题；
+
+    ```javascript
+    function Parent(name) {
+      this.name = name;
+      this.nickName = ["ning1", "ning2"];
+    }
+    Parent.prototype.sayHi = function () {
+      console.log(`Hi ${this.name}`);
+    };
+    function Child(name, age) {
+      this.age = age;
+      Parent.call(this, name); //第一次调用Parent
+    }
+    Child.prototype = new Parent(); //第二次调用Parent
+    Child.prototype.constructor = Child;
+
+    let instance1 = new Child("ning", 2);
+    let instance2 = new Child("yu", 3);
+    instance1.nickName.push("ning3");
+    //实例之间的属性不会污染
+    console.log(instance1.nickName); //['ning1', 'ning2', 'ning3']
+    console.log(instance2.nickName); //['ning1', 'ning2']
+    //可以继承原型的方法
+    instance1.sayH1(); //Hi ning
+    console.log(instance1 instanceof Parent); // true
+    ```
+
+4.  **原型继承**： 通过一个空对象为中介，直接将传入的对象做为这个空对象的 prototype，然后 new 返回这个空对象
+
+    > 优点：可以继承多个对象的属性和方法，支持多重继承；相对比较简单，有现成的方法 Object.create()可以实现
+
+    > 缺点：子对象共享父对象的属性，可能存在篡改属性；并且无法传递参数给父对象的构造函数
+
+    ```javascript
+    function object(obj) {
+      function F() {}
+      F.prototype = obj;
+      return new F();
+    }
+    let parent = {
+      name: "ning",
+      nickName: ["ning1", "ning2"],
+      sayHi: function () {
+        console.log(`hi! ${this.name}`);
+      },
+    };
+    let child1 = object(parent); //等同于Object.create()方法
+    let child2 = object(parent);
+    child1.sayHi(); // hi! ning
+    //可以串改父对象的属性
+    child1.name = "yu";
+    child1.sayHi(); //hi! yu
+    //但共享的不受影响
+    child2.sayHi(); //hi！ning
+    ```
+
+5.  **寄生式继承**：在原型继承的基础上修改，在一个方法中封装继承的过程，达到增强对象的目的，然后返回它。
+
+    > 优点：可以在不修改原有对象的情况下向其添加属性和方法。
+
+    > 缺点：不能使用 instanceof 方法，比较难追本溯源；
+
+    ```javascript
+    function inheritObj(obj) {
+      let newObj = Object.create(obj);
+      //根据需求增强对象
+      newObj.sayName = function () {
+        console.log(`my name is ${this.name}`);
+      };
+      return newObj;
+    }
+    let parent = {
+      name: "ning",
+      nickName: ["ning1", "ning2"],
+      sayHi: function () {
+        console.log(`hi! ${this.name}`);
+      },
+    };
+    let child1 = inheritObj(parent);
+    //调用继承自父对象的方法
+    child1.sayHi(); //h1 ning
+    //调用新添加的方法
+    child1.sayName(); //my name is ning
+    ```
+
+6.  **寄生组合式继承**：和组合式继承类似，结合了构造函数和寄生式继承的优点。核心思想是在创建子类构造函数时，不调用父类构造函数的实例，而是使用原型链继承，然后在寄生式继承的基础上，将父类的原型复制给子类的原型。这就避免了调用两次父类构造函数。寄生组合式继承是当下库使用最多的方法，结合了其他继承，将其取其精华，去其糟粕！
+
+    > 优点：避免了调用两次父了构造函数，提升了性能；保留了原型链，可以使用 instanceof 追本溯源；
+    > 缺点：相对其他继承来说比较复杂；
+
+    ```javascript
+    function inheritPrototype(child, parent) {
+      let prototype = Object.create(parent.prototype); //使用原型继承父类的原型
+      parent.constructor = child; //重置子类构造函数的引用
+      child.prototype = prototype; //子类原型设置为父类原型的副本
+    }
+
+    function Parent(name) {
+      this.name = name;
+      this.nickName = ["ning1", "ning2"];
+    }
+    Parent.prototype.sayHi = function () {
+      console.log(`Hi ${this.name}`);
+    };
+    function Child(name, age) {
+      this.age = age;
+      Parent.call(this, name); //只调用了一次父类构造函数，提升了性能
+    }
+    inheritPrototype(Child, Parent);
+    Child.prototype.sayNme = function () {
+      console.log(`my name is ${this.name}`);
+    };
+
+    let instance1 = new Child("ning", 2);
+    let instance2 = new Child("yu", 3);
+    instance1.nickName.push("ning3");
+    //修改原型属性，实例间不受影响
+    console.log(instance1.nickName); //['ning1', 'ning2', 'ning3']
+    console.log(instance2.nickName); //['ning1', 'ning2']
+    //调用父类的方法
+    instance1.sayHi(); //Hi ning
+    //调用子类的方法
+    instance1.sayNme(); //my name is ning
+    //可以追本溯源
+    console.log(instance1 instanceof Parent); //true
+    ```
+
+7.  **Class 类继承**：运用 es6 的类继承，可以更简单直观的定义继承关系
+
+    ````javascript
     // ES6 类继承
     class Parent {
         constructor(name) {
@@ -320,52 +323,232 @@
         }
         sayName() {
             console.log(`my name is ${this.name}`);
-        }
+    }
     }
     let instance1 = new Child("ning", 2);
     //调用父类的方法
     instance1.sayHi(); //Hi ning
     //调用子类的方法
     instance1.sayName(); //my name is ning
+     ````
 
-    ```
-**总结**：JavaScript中的继承通常可以分为两大类：原型类继承和原型链类继承。原型类继承包括原型继承、寄生继承和寄生组合继承，而原型链类继承包括原型链继承、构造函数继承和组合继承。这两大类继承方式各自解决了不同的问题。
+    **总结**：JavaScript 中的继承通常可以分为两大类：原型类继承和原型链类继承。原型类继承包括原型继承、寄生继承和寄生组合继承，而原型链类继承包括原型链继承、构造函数继承和组合继承。这两大类继承方式各自解决了不同的问题。
 
->**组合继承**：结合了原型链继承和构造函数继承的特点，克服了原型链继承中的属性污染问题，以及构造函数继承中无法共享父类原型上的方法的问题。
+> **组合继承**：结合了原型链继承和构造函数继承的特点，克服了原型链继承中的属性污染问题，以及构造函数继承中无法共享父类原型上的方法的问题。
 
->**寄生组合继承**：寄生组合继承将组合继承进一步改进，解决了子对象修改父对象时对其他子对象产生影响的问题，同时避免了原型链中无法获取原型链上的属性和参数，以及不能传递参数给父对象的问题。寄生组合继承结合了各种继承方式的优点，是目前大多数库使用的高效继承方法。
+> **寄生组合继承**：寄生组合继承将组合继承进一步改进，解决了子对象修改父对象时对其他子对象产生影响的问题，同时避免了原型链中无法获取原型链上的属性和参数，以及不能传递参数给父对象的问题。寄生组合继承结合了各种继承方式的优点，是目前大多数库使用的高效继承方法。
 
 # 3、迭代器和生成器
 
 ## 迭代器
-**_解释_**：迭代器去一个对象，用于定义可以迭代的协议。对象是无法迭代的，因此可以手动定义一个迭代器，用for of迭代。
+
+**_解释_**：迭代器去一个对象，用于定义可以迭代的协议。对象是无法迭代的，因此可以手动定义一个迭代器，用 for of 迭代。
 
 ## 生成器
-**_解释_**：生成器是es6的一个函数，和普通函数不同，生成器里面的代码不会一下子执行完，可以控制暂停和恢复执行。改函数返回一个生成器对象。
+
+**_解释_**：生成器是 es6 的一个函数，和普通函数不同，生成器里面的代码不会一下子执行完，可以控制暂停和恢复执行。改函数返回一个生成器对象。
 
 # 4、设计模式
 
 ## 工厂模型
+
 **_解释_**：提供一个创建对象的接口，允许子类决定实例化哪一个类。工厂模型类似于开发一个超级产品，而开发这个产品的过程中，拆分成多种不同的生产线，我们把这些生产线就称为工厂模式的子类型，当需要构建一个新产品时，把这些生产线拿出来组装即可
 
 ## 原型模式
-**_解释_**：通过克隆现有对象来创建新对象。原型模式更贴近于js编程思想，在js中，每个对象都有一个原型对象而这个原型对象指向父类的原型对象，当我们需要扩展这个对象时，可以通过原型去扩展。
+
+**_解释_**：通过克隆现有对象来创建新对象。原型模式更贴近于 js 编程思想，在 js 中，每个对象都有一个原型对象而这个原型对象指向父类的原型对象，当我们需要扩展这个对象时，可以通过原型去扩展。
 
 ## 单例模型
-**_解释_**：确保一个类只有一个实例，并提供一个全局的访问点来访问这个实例。单例模型指的是一个对象只有一个实例对象，当我们多次new一个构造函数时，其结果都指向第一个new的对象，并且提供全局统一的方法去访问它，Vuex就运用了单例模型的思想。
+
+**_解释_**：确保一个类只有一个实例，并提供一个全局的访问点来访问这个实例。单例模型指的是一个对象只有一个实例对象，当我们多次 new 一个构造函数时，其结果都指向第一个 new 的对象，并且提供全局统一的方法去访问它，Vuex 就运用了单例模型的思想。
 
 ## 适配器模型
-**_解释_**：当一个接口返回的参数不是我们想要的参数时，我们可以封装一个方法去适配这个接口的返回参数，以达到我们想要的目的，这就是适配器模型；可以理解为电子产品中的转换器，如将use-b转换为type-c接口。
+
+**_解释_**：当一个接口返回的参数不是我们想要的参数时，我们可以封装一个方法去适配这个接口的返回参数，以达到我们想要的目的，这就是适配器模型；可以理解为电子产品中的转换器，如将 use-b 转换为 type-c 接口。
 
 ## 装饰器模型
+
 **_解释_**：指在不改变原有对象的情况下，再对接口进行封装扩展，使其能满足更复杂的需求。
 
 ## 代理模型
-**_解释_**：代码模型指是通过一个中间商对一个事件进行操作，如Proxy操作，A访问B，不能直接访问，而是通过访问C才能访问到B
+
+**_解释_**：代码模型指是通过一个中间商对一个事件进行操作，如 Proxy 操作，A 访问 B，不能直接访问，而是通过访问 C 才能访问到 B
 
 ## 观察者模型
+
 **_解释_**：观察者模型定义了一个一对多的依赖关系，让多个观察者同时监听一个一个对象，当这个对象发生状态更新时，可以通知这些观察者，使它们能够及时更新。通常存在一个被称为“主题”的对象，它直接维护其观察者的列表，并在状态改变时直接通知它们。
 
 ## 发布-订阅模型
+
 **_解释_**：和观察者模型类似，区别在于当对象发生变化时，观察者模型是主动去通知众多观察者更新状态；而发布-订阅模型是当对象发生变化不主动通知，而是发步到一个中转平台上，而观察者们去订阅这个平台的消息，当发生变更时就会通知到观察者及时更新状态。通常有一个中间层，即事件频道或消息代理。发布者发布消息到一个频道，而订阅者订阅那个频道来接收消息。发布者和订阅者通常不直接知道彼此的存在。
 
+# 5、CSS
+
+### BFC
+
+**_解释_**：BFC（块级格式化上下文），指的是在文档流中，独立出来一个渲染块，bfc 里面的元素布局不影响外面的布局
+
+#### 会创建 BFC 的元素有
+
+> - float 为 left、right
+> - overflow 不为 visible
+> - display 为 flex、inline-block、table-cell、grid 等
+> - position 为 absolute、flexed
+> - 根元素
+
+#### BFC 的布局规则是
+
+> - BFC 内的元素一块一块的垂直折叠
+> - BFC 内的两个相邻的块级元素会发生 margin 重叠
+> - BFC 内浮动的元素高度也会被计算（用于清除浮动）
+> - BFC 里面的元素布局不会影响到外面的元素的布局
+
+#### BFC 的作用
+
+> - 消除两个相邻的元素 margin 重叠问题，把其中一个元素添加一个新的 BFC 里面
+> - 浮动元素会脱离父元素的文档流，此时可以给父元素创建一个 BFC
+> - 解决文字环绕浮动元素的问题。
+> - 用于实现多栏布局，用浮动实现侧边栏固定
+
+##### 清除浮动可以给父容器添加 BFC，还可以使用 clearfix 定义一个伪类元素 clear：both。
+
+# 6、Vue 源码
+
+1. 执行 new Vue 后发生了什么
+
+   > 执行 new Vue 后，会调用 Vue 这个构造函数并创建一个实例。在这个过程中，先将用户传入的属性和内部的默认属性进行合并。紧接着 Vue 执行了一系列的初始化工作，如初始化生命周期、事件系统和 render，调用**beforeCreate**钩子。接着，初始化 data、props、computer、watch 和 method 等属性，调用**created**钩子。如果传入有 el 属性则自动执行$mount 进行挂载操作，即编译模版并转成渲染函数，生成虚拟 dom，最后挂载到真实的 dom 上。如果没有 el 属性，就需要手动进行挂载。
+
+2. Vue 实例挂载的整个过程
+
+   > 通过 new Vue 创建实例后, 若传入的 options 含有 el 属性，Vue 将自动开始挂载。此过程首先是模板编译：当存在 template 时，它被转化为渲染函数；否则，el 指定的外部 HTML 被用作模板。这个渲染函数中利用**createElement**生成虚拟 DOM，但是如果 option 中已经定义了 render 函数，那么就不会走这个编译模版的过程，而是直接调用**createElement**生成虚拟 DOM。接着，Vue 将虚拟 DOM 与真实 DOM 对比。首次挂载时，直接渲染；后续更新时，通过 diff 算法找出差异，并高效地更新真实 DOM。
+
+3. Vue 组件创建的过程
+   >
+
+# 7、浏览器
+
+1. 从浏览器输入 URL 到页面呈现出内容，这个过程发生了什么
+
+   > - 地址解析：当输入 url 后，浏览器会先尝试在缓存中查找对应的 IP 地址，如果缓存没有就访问本地的操作系统，如果还没有就会访问远程的 DNS 系统进行地址解析，拿到对应的 IP 地址。
+   > - 建立 TCP 连接：当拿到 IP 地址时，浏览器会和服务器建立连接即 TCP/IP 连接，进行 3 次握手后便可连接成功，如果是 HTTPS 请求还要建立 SSL/TLS 加密连接。
+   > - 发送 HTTP 请求：浏览器和服务器建立连接之后就可以发生 HTTP 请求给到服务器。
+   > - 服务器返回响应请求：服务器收到请求后，会处理相应的逻辑，返回符合请求要求的数据，通常会有 HTML、CSS、JavaScript 等内容
+   > - 浏览器解析响应请求：浏览器解析响应数据，首先解析 HTML 生成一棵 DOM 树，与此同时 CSS 也在并行的解析生成 CSS OM 树，最后将解析出来的 DOM 树和 CSS OM 树进行合并得到一棵渲染树。如果在这个过程中遇到 Javascript 文件，那么就会阻塞 HTML 文档的解析，此时可以给 js 文件定义一个 defer 属性标识 js 文件要等 html 解析完成才会加载执行，还可以设置 async 属性，但是该属性只是异步加载 js 文件，在加载成功后，如果 html 还没解析完成还是会阻塞解析。
+   > - 浏览器渲染出来：当合并成 render 树的时候，浏览器会从根节点递归，在屏幕上标识每一个节点的位置、大小等，进行布局和重绘。一旦布局确定，浏览器就会进行渲染，将每一个节点绘制成实际像素。
+
+2. 调用栈溢出
+
+   > 调用栈溢出指在计算机中，函数调用的层级超过了指定的层级导致调用栈的容量不够然后溢出。在计算机中一个函数被调用就会被压到栈顶，当函数执行完成并返回时就从栈顶弹出。一般太深层的函数嵌套和无限的递归会导致栈溢出。
+
+3. 栈空间、堆空间、代码空间
+
+   > - 栈空间是一种先进后出的数据结构，用于存储局部变量、函数调用的返回地址等，提供快速的访问能力，并且会自动分配地址和回收地址
+   > - 堆空间是指用于动态内存分配的内存区域，用于存储应用类型，通常访问比栈慢，需要手动分配和回收内存，如果使用不当会造成堆内存泄漏。对象、数组、函数实际上是存储在堆中，然后返回堆的指针并将指针存在栈中。
+   > - 代码段指的是 js 的代码，以二进制的形式存储在计算机中。.js 文件的代码都是
+
+4. 垃圾回收机制
+
+   > - 引用计数：浏览器标记对象的引用情况，当引用的值为 0 时，垃圾回收机制就会自动回收。但是如果存在循环引用就不会生效。
+   > - 标记清除：用来解决引用计数存在的循环引用问题，浏览器会定期的从根对象开始逐步检查，标记可以访问到的对象，访问完毕时，没有被标记的对象被当成垃圾清除。
+   > - 手动清除：当我们声明一个对象时，不需要再使用的时候可以手动的清除，如使用闭包。也可以使用弱引用集合来断开引用，如 weakMap、weakSet
+   > - 内存限制：浏览器设置了一定的内存容量阀值，当到达内存的使用限制时，会频繁的调用垃圾回收机制。
+
+5. JavaScript 执行过程
+
+   > 当浏览器解析 HTML 文档并遇到 script 标签时，它将下载相应的 JS 源代码。一旦 JavaScript 引擎获得源代码，它首先进行**词法分析**，这一步将源代码分解为多个标记，如 var、if 等。紧接着，**语法分析**阶段开始，将这些标记转换为一个**抽象语法树** (AST)，这是一个计算机可以理解的代码结构表示。在代码真正执行前，引擎进行了一个关键的**预编译**步骤。在这一阶段，它识别所有的变量和函数声明，并为它们在内存中分配空间。这也是变量提升和函数提升现象产生的地方。随后，为了提高效率，现代 JS 引擎使用**即时编译** (JIT) 技术。这意味着代码被边解释边编译，AST 首先被转换为字节码，然后进一步转换为机器码。最终，这些机器码在 JavaScript 引擎中执行，激活所有的函数调用、赋值和其他程序操作。这个流程确保了 JavaScript 代码的高效、流畅的执行
+
+6. 浏览器的分层和合成机制
+
+   > 在浏览器渲染过程中，它采用了**分层**策略，将不同种类的元素分别渲染到独立的图层。这样做的好处在于，当某一层的元素发生变化时，只需重绘该特定层而无需重绘整个页面，从而提高渲染效率。而**合成**则是指浏览器在最终呈现页面时，会将这些独立的图层按照特定的顺序和规则组合成一个完整的场景。但关键在于，当某一层的内容有所变动，浏览器只需重新渲染该层并将其与其他层进行合成，而不是重新渲染整体，进一步优化了性能。
+
+7. 跨标签页通信
+
+   > - localStorage/sessionStorage：在将数据存储到 localStorage/sessionStorage 中，在共享的页面监听 message 的变化，或者取出存储的数据。
+   > - BroadcastChannel()：一个构造函数，允许我们创建一个实例，在这个实例中 postMessage 一个数据，然后在另一个页面中获取。
+   > - ShardWord：Web Workers 中的一种，可以被不同的页面发送或共享数据
+   > - Cookie：存储在请求头中，通过服务器进行通信。
+   > - Window.postMessage：从一个窗口发送消息到另一个窗口，无论这个窗口是否同源，可以用于跨越通信。
+
+8. 常见的内存泄漏有哪些
+
+   > - 未清除的定时器
+   > - 事件监听函数结束后没有清除
+   > - 定义太多全局变量，而且占的内存都巨大
+   > - 闭包引用了大量的数据，而且在使用后没有手动消除
+
+9. 前端常见的攻击手段
+   > - 跨站脚本攻击(xss)：攻击者向目标网站注入一段可执行的恶意代码，使代码可以在目标网站上执行，从而达到一定的目的。常见的攻击类型有存储型 XSS、反射性 XSS、DOM 型 XSS。
+   > - 跨站请求伪造(CSRF)：攻击者诱导用户进入到第三方的网站，然后在第三方网站中向被攻击的网站发送跨站请求，利用用户在被攻击的网站已经登录的安全凭证发起跨站请求，以伪造用户的身份在被攻击的网站达到一定的目的。常见的攻击类型有 GET 攻击类型、POST 攻击类型、链接攻击类型。
+   > - 点击劫持：点击劫持使用的是视觉欺骗，诱导用户在不知情的情况下点击不安全的按钮，以达到特定的目的，即将危险的点击操作伪装成安全的，用户以为是安全的其实是不安全的。
+   > - 中间人攻击：发生在网络传输的过程，攻击者在两个通信方中间进行拦截、截取或更换他们的通信信息。常见的攻击类型有 ARP 欺骗、DNS 劫持、SSL/TLS 劫持、Wi-Fi 欺骗等。
+   > - DNS 劫持：在用户向指定 URL 发送请求时，在这个过程中会查询 URL 对应的 IP 地址。此时攻击者就会串改或劫持用户的请求，将请求的目标网站 IP 地址重定向到攻击者给定的 IP 地址，然后与用户进行通信。
+   > - 开放重定向：web 上的安全漏洞，允许用户从一个受信任的链接重定向到外部的链接。这种攻击的存在通常是由于网站没有正确验证重定向参数的结果，使得攻击者可以自由指定重定向目标
+
+
+# Webpack 
+
+## NPM 
+1. 执行npm install背后发生了什么
+  > npm install本质是执行为项目安装依赖的过程。首先，npm会检索项目下的package.json文件下的依赖，如果是首次安装那么会直接访问npm仓库，非首次安装就会查看node_modules目录，了解哪些需要安装或者哪些包需要更新，然后在查询npm仓库；由于每个包可能依赖其他的包，那么npm就会创建一个依赖树，确保有些包不会重复安装；之后npm开始下载所需要的包，再解压到node_modules目录下。npm会生成或更新package-lock.json文件，这个文件包含的是下载的包的精确版本信息，确保了其他人下载的跟你下载的一样。此时，npm install已经执行完成，后台会输出这些安装过程的日记。但是如果node_modules存在了但package不存在的包，那么npm会把这些包删除掉。
+
+
+# TCP
+
+1. TCP概述
+  TCP是传输层的关建协议，它是可靠的、面向连接的、基于字节流的全双工协议。首先，它可靠：确保数据按顺序到达，并在丢失时重新发送。其次，它是面向连接的，在发送数据之前必须通过三次握手来建立通讯。另外，TCP是基于字节流的，这意味着它可以灵活地传输任何大小的数据。而且不仅客户端可以启动连接，服务器也能做同样的事，是一个全双工的协议。
+2. 首部字段
+  tcp首部字段包含了多种信息，这些信息用于指导TCP数据段的发送和接收，确保数据传输的可靠性。
+  - 源端口号、目标端口号
+  - 序列号(SYN)：解决数据包的乱序、重复问题，根据序列号组装出正确的数据再传递给上层应用。确保数据的可靠、有效的传输，并使得TCP可以处理掉包、重传和乱序数据包的问题。
+  - 确认号(ACK)：确认传递的数据包已经到达，表示比ACK小的数据序列号已经全部接收完毕。
+  - 数据偏移(Data Offset)
+  - 保留(Reversed)：为未来的添加或修改保留位置
+  - 控制位(Flags)：常用的有RST、SYN、PSH、FIN
+  - 窗口大小(Window Size)：表示当前能够接收的数据量
+  - 校验和(Checksum)：用于检查TCP首部和数据的正确性和完整性，当收到校验有差错的报文，不会进行确认，而是直接丢弃它
+  - 紧急指针(Urgent Pointer)
+  - 选项和填充(Options and Padding)：可选的，用于控制参数，如MSS、SAC、时间戳等
+3. 分层
+  一般来说，分层有两种分层，一种为OSI七层模型（物理层、链路层、网络层、传输层、会话层、表示层、应用层），另一种为TCP/IP层模型（应用层、传输层、网络层、链路层）
+
+  TCP/IP分层
+  - 应用层
+    应用层包含了所有与网络应用相关的协议，如HTTP、FTP、SMDP、DNS等；主要为应用提供通信服务。
+  - 传输层
+    传输层为两台计算机上的应用提供了端到端的逻辑通信服务，确保数据可以从源主机传输到目的主机，传输层主要关注如何进行通信；主要协议有TCP、UDP协议。
+  - 网络层
+    网络层为两台主机之间负责数据包的路由和转发，确定数据如何从发送者传输到接收者，将传输层产生的数据段封装成分组数据包发送到目的主机，并提供路由选择的能力；主要协议有IP、IGMP(组播协议)。
+  - 网络接口层
+    网络接口层提供主机连接到物理网络所需要的硬件和相关的协议，主要为负责帧的传播、物理寻址等；蓝牙、以太网、Wi-Fi都属于这一层的。
+  分层的好处本质是让复杂的问题简单化。通过各层的独立，限制了依赖范围，各层都有独立的接口，各层的工作不影响其他层的；灵活性更好，促进了标准化。
+4. MTU和MSS
+  - MTU工作在链路层，限定最大的数据帧的传输单元。由于以太网传输的大小是有限制的，使用最大的MTU不能超过数据传输链路的路径MTU。
+  - MSS工作在传输层，限制了传输层给网络层数据的最大段的大小。由于MTU的限制，发送方会把传输层给的数据段进行切片，而MSS的作用就是将数据主动进行切片然后递交给网络层。IP数据包长度超过传输链路的MTU时要进行分片，而TCP层为了IP层不用分片，就主动进行分片再传输。 MSS = MTU - IP首部 - TCP首部
+
+5. 三次握手和四次挥手
+  - 三次握手
+    客户端发送一个初始的序列号SYN给服务器，此时客户端进入SYN_SENT状态
+    服务端收到客户端的SYN后，恢复一个ACK确认号和自己的初始序列号SYN，此时服务端进入SYN_RCVD状态
+    客户端收到服务端的ACK和SYN后，会对这个SYN进行确认，然后发送给服务器。此时客户端进入ESTABLISHED状态，服务端收到ack后随即进入ESTABLISHED状态，握手完成。
+  
+    自连接
+    在一台主机里，一个进程监听一个端口进行连接请求，然后请求的主机刚好又是自己，就自己连接上了自己。
+  
+  - 四次挥手
+    客户端发送一个FIN序列号给服务器表示主动亲求断开连接，此时客户端的状态为FIN_WAIT-1
+    服务器收到客户端的FIN，先对这个FIN进行确认，此时服务器进入CLOSE_WAIT状态
+    然后稍等一个定时器后服务器再回复一个FIN给客户端，此时服务器进入LACK_WAIT状态
+    客户端收到服务器的ACK后进入FIN_WAIT-2状态，接着收到FIN后，对这个FIN进行确认就进入WAIT_TIME状态，最后等待2个MSL计时器后进入CLOSED状态，服务器收到确认号进入CLOSED，连接关闭。
+  
+    同时关闭
+    在挥手的时候，由于TCP是全双工的，两方同时发送一个FIN给彼此表示请求关闭，进入了FIN_WAIT-1状态，那么在对端收到FIN后，都进入了CLOSING状态，此时都会发送一个ACK给对端，进入WAIT_TIME状态，等待两个MSL就进入了CLOSED状态。这个过程中，双方同时请求关闭，都没有数据发送，可以跳过FIN_WAIT-2状态，3次挥手就可以成功。
+  
+  SYN和FIN都需要消耗一个序列号，因为只要需要ack确认的都需要消耗序列号。
+
+  为什么需要四次挥手，三次可以吗？
+    理论上是可以的，但是这个要确保服务器没有数据再传给客户端，因为客户端发送FIN时，表示客户端没有请求再发送，然后进入半关闭状态，但是服务端收到客户端的FIN后，是可以发送数据给客户端的，但是如果是3次挥手，同时回复ACK+FIN，那么就无法再发送数据就进入半关闭状态了，所以要先发送一个ack给客户端确认，以免客户端收不到进行重传，然后等一个计时器时间延长确认，如果没有数据发送了，就发送FIN进入半关闭状态。
+
+  可以4次握手吗？
+    理论上也是可以的，即把ack和syn分开来传输，但是这完全没有必要，因为在连接之处，并没有数据传输，而是进行同步双方的序列号，所以没必要分开传输消耗性能。
+
+    

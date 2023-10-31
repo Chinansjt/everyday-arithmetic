@@ -742,7 +742,7 @@ class MyPromise {
 ### new 是用于调用构造函数的，当用 new 调用的函数自动识别为构造函数。返回一个构造函数的实例。内部执行步骤如下：
 
 > - 创建一个新的空对象
-> - 给这个新对象的原型设置为传入构造函数的原型
+> - 给这个新对象的原型设置为传入构造函数的原型对象
 > - 绑定新对象的 this 为构造函数的 this，并调用构造函数
 > - 如果构造函数返回一个对象则返回构造函数的对象，如果返回的是非对象则返回新创建的对象；这一步是因为如果在构造函数内部显示的返回一个对象，则 new 中直接返回这个对象，否则就通过 new 创造一个新对象
 
@@ -850,5 +850,30 @@ async function asyncPool(limit, arrayFun) {
   //等待所有的任务执行成功
   await Promise.all(executing)
   return resolve
+}
+```
+
+## 25、js实现实现二叉树的层序遍历; 给定一个二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
+
+```javascript
+//代码实现
+function levelOrder(root) {
+  if(!root) return []
+
+  let queue = [root]
+  let result = []
+
+  while(queue.length > 0) {
+    let currentNode = []
+    let queueSize = queue.length
+    for(let i = 0; i < queueSize; i++) {
+      let node = queue.shift()
+      currentNode.push(node.val)
+      if(node.left) queue.push(node.left)
+      if(node.right) queue.push(node.right)
+    }
+    result.push(currentNode)
+  }
+  return result
 }
 ```
