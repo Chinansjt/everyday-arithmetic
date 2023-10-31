@@ -855,7 +855,6 @@ async function asyncPool(limit, arrayFun) {
 
 ## 25、js实现实现二叉树的层序遍历; 给定一个二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
 
-
 ```javascript
 //代码实现
 function levelOrder(root) {
