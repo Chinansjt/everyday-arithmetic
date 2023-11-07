@@ -772,7 +772,7 @@ let person = {
 };
 //这里调用sayName，里面的this是指向person的，因为this的指向是在调用时确定的，谁调用它this就指向谁。这里是person调用它，所以指向person。
 person.sayName(); // my name is ning
-//这用调用sayName，里面的this是指向window，因为这这里并不是属于person调用它，而是它以一个属性传递给setTimeout，等同于
+//这里调用sayName，里面的this是指向window，因为这这里并不是属于person调用它，而是它以一个属性传递给setTimeout，等同于
 // let fun = person.sayName, 然后调用fun，而调用fun是全局window调用的。
 setTimeout(person.sayName, 1000); // my name is undefine
 let bindSay = person.sayName.bind(person); //将this绑定为person
@@ -882,5 +882,28 @@ function levelOrder(root) {
     result.push(currentNode)
   }
   return result
+}
+```
+
+## 26、手写实现instanceof
+
+```javascript
+//代码实现
+function myInstanceof(instance, constructor) {
+  //获取实例的原型，等同于instance.__proto__
+  let proto = Object.getPrototypeOf(instance)
+
+  //获取构造函数的原型
+  let prototype = constructor.prototype
+
+  while(proto) {
+    //如果原型是一样的，就返回true
+    if(proto === prototype) {
+      return true
+    }
+    //递归的获取实例的原型，当找到原型链的顶端Object.prototype为null时，终止循环表示没找到
+    proto = Object.getPrototypeOf(proto)
+  }
+  return false
 }
 ```
