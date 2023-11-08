@@ -372,11 +372,11 @@
 class SingleInstance {
   constructor() {
     //查看是否已经存在实例，有则直接返回
-    if(SingleInstance.instance) return SingleInstance.instance
-    this.value = Math.random()
+    if (SingleInstance.instance) return SingleInstance.instance;
+    this.value = Math.random();
     //创建一个实例
-    SingleInstance.instance = this
-    return this
+    SingleInstance.instance = this;
+    return this;
   }
 }
 ```
@@ -446,47 +446,47 @@ subject.notify("1");
 //代码实现
 class PubSub {
   constructor() {
-    this.subscribers = {}
+    this.subscribers = {};
   }
 
   subscribe(event, callBack) {
-    if(!this.subscribers[event]) this.subscribers[event] = []
+    if (!this.subscribers[event]) this.subscribers[event] = [];
 
-    this.subscribers[event].push(callBack)
+    this.subscribers[event].push(callBack);
   }
 
   unsubscribe(event, callBack) {
-    if(!this.subscribers[event]) return
+    if (!this.subscribers[event]) return;
 
-    let index = this.subscribers[event].indexOf(callBack)
-    if(index > -1) {
-      this.subscribers[event].splice(index,1)
+    let index = this.subscribers[event].indexOf(callBack);
+    if (index > -1) {
+      this.subscribers[event].splice(index, 1);
     }
   }
 
   publish(event, data) {
-    if(!this.subscribers[event] || !this.subscribers[event].length) return
+    if (!this.subscribers[event] || !this.subscribers[event].length) return;
 
-    for(let item of this.subscribers[event]) {
-      item(data)
+    for (let item of this.subscribers[event]) {
+      item(data);
     }
   }
 }
 
 const fun1 = (data) => {
-  console.log(`this fun1 is ${data}`)
-}
+  console.log(`this fun1 is ${data}`);
+};
 const fun2 = (data) => {
-  console.log(`this fun2 is ${data}`)
-}
+  console.log(`this fun2 is ${data}`);
+};
 //构建发布/订阅对象
-const subscribers = new PubSub()
+const subscribers = new PubSub();
 //订阅event频道
-subscribers.subscribe('event', fun1)
-subscribers.subscribe('event', fun2)
+subscribers.subscribe("event", fun1);
+subscribers.subscribe("event", fun2);
 
 //发布通知
-subscribers.publish('event', '6')
+subscribers.publish("event", "6");
 ```
 
 # 5、CSS
@@ -766,3 +766,89 @@ Keepalive 工作原理
 ## 17. 队头阻塞
 
 队头阻塞指的是在一系列的消息队列中，第一个消息因为某种原因延迟处理，而导致了后面的消息即使已经到达了但是还不能被及时处理。在 TCP 中，队头的阻塞是因为 TCP 的严格顺序而引起的，由于 TCP 保证包的顺序到底，因此即使后面的数据先到达，但是仍然不能够被处理。例如，有 A、B、C3 个包，B 和 C 先到达了，而 A 由于某种原因延迟或丢失，迟迟没有到达，接收端必须等待 A 的到达才会对这一组消息进行处理，结果 B 和 C 就被 A 给阻塞了。
+
+# HTTP
+
+## 1. HTTP 的报文结构
+
+HTTP 的报文的结构由开始行、头部字段、一个空行和可选的消息体组成，分为请求报文和响应报文。请求报文由请求行、请求头、一个空行、请求体组成，而响应报文由状态行、响应头、一个空行、响应实体组成。
+
+## 2. 请求方法
+
+HTTP 的请求方法有 GET、POST、PUT、DELETE、OPTIONS、HARD 等
+
+- GET 方法
+
+  主要是获取指定的服务器资源。幂等（多次请求产生的数据都是一样的），不管请求多少次对服务器的数据都不会产生任何影响，请求数据包含在 URL 中，可缓存。
+
+- POST 方法
+
+  主要是向服务端提交数。，非幂等（相同的多次请求会产生不同的效果），每次请求都会对服务器数据产生副作用，请求数据包含在请求体中，但不能缓存。
+
+- PUT 方法
+
+  将请求的内容放置或者修改内容到指定的 URI 中，可以理解为修改数据。幂等（相同的多次请求产生的效果都一样），不管请求多少次对服务器的影响都是有限的，请求数据包含在请求体中，不能被缓存。
+
+- DELETE
+
+  对指定的内容进行删除操作。幂等（相对的请求产生的效果都是一样的），不管请求多少次对服务器的影响都是有限的，数据包含在 url 中，不能被缓存。
+
+- OPTIONS
+
+  请求获取服务器允许的通信选项，一般是当 POST 的预请求使用，请求服务器能使用的请求方法。幂等（多次请求，返回的响应都是一样的），用于查询不会产生副作用，没有请求数据，可以缓存
+
+- HARD
+
+  请求资源的标头信息，返回的和 GET 响应的类似，但没有实际数据。主要用于在下载一个大文件时，先同过 HARD 请求到实际请求到头部字段 content-length 的实际大小，再进行请求，和 option 类似。
+
+## 3. GET 和 POST 请求的区别
+
+GET 主要是用于获取数据，而 POST 主要用于数据的提交修改等。GET 请求的数据包含在 URL 中，由于 URL 长度受浏览器限制，所以请求的数据就有了限制；而 POST 请求的数据包含在请求体中，所以数据长度没有限制。由于 GET 请求的数据暴露在 URL 中，相对来说就没有 POST 请求安全。GET 请求可以被浏览器缓存记录，而 POST 则不行。GET 请求是幂等的，不管请求多少次返回的数据都是一样的，并且不会对数据产生副作用；而 POST 是非幂等的，每次请求的响应都不一样，并且会对数据产生副作用。
+
+## 4. 状态码
+
+状态码存在 HTTP 的响应状态行中，有 1XX、2XX、3XX、4XX、5XX
+
+1XX：表示请求正在进行中
+
+2XX：表示请求成功
+
+- 200(OK)：表示正常请求成功
+- 202(Accepted)：表示服务已经收到了请求，但是还没有处理
+- 204(Not Content)：服务器成功处理了请求，但是没有返回数据
+- 206(Partial Content)：表示请求的区间数据成功，要结合请求头的 Rang 字段使用
+
+3XX：表示重定向，需要后续操作才能完成请求
+
+- 301(Moved Permanently)：表示永久重定向，当前的请求已经被永久的重定向到响应头的 Location 的 URL 中，下次发起请求应该请求到 Location 中
+- 302(Found)：表示临时重定向，当前的请求被临时的重定向到响应头的 Location 的 URL 中，但是下次请求还是可以正常的请求当前的 URL
+- 303(See Other)：通常作为 PUT 和 POST 的返回结果
+- 304(NOT Modified)：使用协商缓存返回到的数据，表示当前的请求返回数据命中了协商缓存，数据没有被修改过，使用缓存的数据。
+
+4XX：表示客户端错误
+
+- 400(Bad Request)：表示客户端发送给服务端的请求数据存在错误。
+- 401(Unauthorized)：表示当前请求需要鉴权，鉴权成功后才能正常发起请求
+- 402(Payment Required)：表示当前的请求需要付费后才能正常使用
+- 403(Forbidden)：表示客户端的请求错误，服务端可以处理，但是拒绝处理。
+- 404(Not Found)：表示请求的页面不存在，不能确定是永久丢失还是零时丢失
+- 405(Method Not Allowed)：表示当前请求方法被服务器禁止
+- 410(Gone)：表示请求的页面已经永久的丢失，跟404类似，但是确认为永久丢失
+
+5XX：表示服务端错误
+
+- 500(Internal Serve Error)：服务器出现了错误，尚不能处理
+- 501(Not Implemented)：表示客户端请求的访问不被服务器支持
+- 503(Service Unavailable)：表示当前服务不可用，服务器可能挂掉了
+
+## 5. HTTP各版本之间的优缺点
+  从HTTP首版确定到现在，已经迭代了4个版本，为HTTP/0.9、HTTP/1.0、HTTP/1.1、HTTP/2.0
+
+  - HTTP/0.9：1991年推出，只支持GET请求，不支持请求头和原数据，只能请求简单的HTML文件
+  - HTTP/1.0：1996年推出，引入了请求头和响应头的概念，允许传输除了纯文本之外的其他类型数据，还引入了状态码、多字符集主持。但是不支持持久连接，每次请求/响应完成后，就会断开连接，下次请求要重新进行TCP连接。
+  - HTTP/1.1：1997年推出，支持持久连接，引入管道化技术，允许同一个TCP连接中，按顺序发送多个请求而不需要等待响应。引入分块传输概念，将生成的数据分块的进行传输效率更快，还引入了更多的缓存策略，同时支持更多的请求方法，如PUT、DELETE、OPTIONS等。
+  - HTTP/2.0：2015年正式推出，支持二进制帧的机制，将请求和响应分成多个传输帧。引入多路复用的概念，可以在同一个连接并行的传输，解决了1.X的对头阻塞问题。支持服务器推送，引入了头部压缩机制，减少了冗余头部信息量的传输，并且强制使用了HTTPS进行加密传输。
+
+  hTTP/2.0的二进制帧就是将1.X的文本格式改为二进制的格式进行传输，在2.0中，客户端和服务端之间的传输采用了二进制帧的格式，这些帧是最小的传输单位，传输成为流，每个帧都包含了特定的数据信息。有了这个二进制帧的设计可以使HTTP支持多路复用，在一个连接中并行的传输数据，而不会相互影响，解决了队头的阻塞问题。同时还可以设置传输的优先级，规定哪些是需要优先传输的内容，并且支持头部压缩的功能。
+
+  头部压缩原理：在1.X版本中，每次HTTP传输都携带着头部信息，这些信息大多都是相同的，如果每次传输都带上就会带来很大的性能开销。于是在2.0版本中，采用了HPACK算法来对头部信息进行压缩处理，使之体积更小传输更快。
