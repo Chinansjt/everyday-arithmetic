@@ -608,6 +608,54 @@ BFC 的作用
 
 # Webpack
 
+1. webpack概述以及工作原理
+  **概述**：Webpack是一个现代JavaScript应用的模块打包器，它将各种资源视为模块。Webpack通过分析一个或多个指定的入口文件，递归地构建出项目的依赖图，然后将这些依赖合并成一个或多个bundle文件，以便于在浏览器中执行。
+
+  **工作原理**
+  - Entry入口文件：Webpack首先读取`webpack.config.js`中的配置，特别是entry属性来确定一个或多个入口文件。Webpack从这些入口文件开始解析应用程序。
+  - 生成依赖图：Webpack递归地处理入口文件及其依赖的模块或库。这些依赖通过相应的loader进行转换，最终形成一个完整的依赖关系图。
+  - 生成Chunk：基于依赖图，Webpack生成chunk。每个chunk通常对应一个输出文件。
+  - Output输出生成Bundle：Webpack根据配置将chunk合并成一个或多个bundle文件。这些文件是最终要在浏览器中加载的静态资源。
+  - Plugin的工作时间点：Plugins在Webpack的整个编译过程中介入，可执行一系列复杂操作，包括但不限于优化、资源管理和环境变量的注入。
+
+2. 资源管理
+  Webpack将所有类型的资源视为模块。它天然处理JavaScript，但对于其他类型的文件，如CSS、图片或HTML，Webpack使用各种loader将它们转换成有效的模块。这些转换后的模块随后被添加到依赖图中。此外，plugins提供了进一步处理这些资源的能力，如优化、压缩等。
+
+3. 输出管理
+  经过一系列的处理后，Webpack根据`webpack.config.js`中定义的output选项将资源打包成一个或多个bundle。这些bundle文件是最终要在浏览器中加载的静态资源，它们包含了所有必要的代码和资源。
+
+4. loaders
+
+5. plugins
+
+6. code splitting
+
+
+7. 文件指纹
+  用于版本控制或优化缓存，会在文件名中注入一个hash值，每当内容发生改变就会生成一个新的hash值，有助于浏览器识别。
+  - 项目指纹Hash：`[name].[hash].js`当项目的内容发生变化，hash值就会变化
+  - Chunkhash：`[name].[chunckhash].js`chunk发生改变，chunkhash就会变化
+  - Contenthash：`[name].[contenthash].js`文件内容发生改变，contenthash就会变化
+
+8. 打包Library
+
+9. HRM
+
+10. Tree Shaking
+
+11. Shimming
+
+12. Source-Map
+
+13. ModuleChunk
+
+14. MF
+
+15. runtime和manifest
+
+16. webpack优化手段
+
+
 ## NPM
 
 ### 1. 执行 npm install 背后发生了什么
