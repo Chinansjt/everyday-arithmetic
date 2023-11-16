@@ -629,31 +629,62 @@ BFC 的作用
 5. plugins
 
 6. code splitting
+  代码切分是webpack的优化技术，通过将一个大的bundle文件切成小的chunk，这些chunk根据实际需求动态的价值，减少首次加载的时间。webpack有3种方法实现code splitting
+  - entry入口文件：通过配置entry属性为多入口，可以手动将每个入口切分成不同的bundle文件，减少总bundle的大小
+  ```javascript
+  entry: {
+    index: '.src/index.js',
+    main: './src/main.js'
+  }  
+  ```
+  - 动态加载：使用import实现动态加载，webpack将每个使用import的模块切成独立的chunk。
+  ```javascript
+  import('./src/index.js').then((indexModule) => {
+    //使用模块的逻辑
+  })
+  ```
+  - SplitChunksPlugin：通过webpack自带的插件，将重复的依赖提取到一个共享chunk中，避免依赖在多个模块使用时，每个模块都进行打包。
+  ```javascript
+  optimization: {
+    splitChunks: {
+      chunk: 'all'
+    }
+  }
+  ```
+
+  **将代码进行切分的好处是，可以减少首次加载时间，按需的加载代码。**
+
+7. Module和Chunk 
+module和chunk都是webpack的核心概念，在webpack中，把一切资源都认为是模块，如js文件、css、img等，这些模块是webpack的基本构成单元。而chunk则是webpack构建过程中的输出单元，由不同的模块组成的，使用代码拆分可以将一个bundle拆成多个chunk，同时由可以用多个chunk组合成一个bundle输出。总的来说，模块是Webpack的基本工作单元，负责具体资源的处理，而chunk则是模块在编译过程中的组合体，最终决定了输出文件的结构和性能优化。
 
 
-7. 文件指纹
+
+
+1. 文件指纹
   用于版本控制或优化缓存，会在文件名中注入一个hash值，每当内容发生改变就会生成一个新的hash值，有助于浏览器识别。
   - 项目指纹Hash：`[name].[hash].js`当项目的内容发生变化，hash值就会变化
   - Chunkhash：`[name].[chunckhash].js`chunk发生改变，chunkhash就会变化
   - Contenthash：`[name].[contenthash].js`文件内容发生改变，contenthash就会变化
 
-8. 打包Library
+1. 打包Library
 
-9. HRM
+2. HRM
 
-10. Tree Shaking
+3.  Tree Shaking
 
-11. Shimming
+4.  Shimming
 
-12. Source-Map
+5.  Source-Map
 
-13. ModuleChunk
+6. Module和Chunk
 
-14. MF
+module和chunk都是webpack的核心概念，在webpack中，把一切资源都认为是模块，如js文件、css、img等，这些模块是webpack的基本构成单元。而chunk则是webpack构建过程中的输出单元，由不同的模块组成的，使用代码拆分可以将一个bundle拆成多个chunk，同时由可以用多个chunk组合成一个bundle输出。总的来说，模块是Webpack的基本工作单元，负责具体资源的处理，而chunk则是模块在编译过程中的组合体，最终决定了输出文件的结构和性能优化。
 
-15. runtime和manifest
+1.  MF
 
-16. webpack优化手段
+2.  runtime和manifest
+
+3.  webpack优化手段
 
 
 ## NPM
