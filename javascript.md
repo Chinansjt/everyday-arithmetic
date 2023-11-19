@@ -605,7 +605,7 @@ BFC 的作用
 
 # Webpack
 
-1. webpack 概述以及工作原理
+## 1. webpack 概述以及工作原理
 
 **概述**：Webpack 是一个现代 JavaScript 应用的模块打包器，它将各种资源视为模块。Webpack 通过分析一个或多个指定的入口文件，递归地构建出项目的依赖图，然后将这些依赖合并成一个或多个 bundle 文件，以便于在浏览器中执行。
 
@@ -617,18 +617,17 @@ BFC 的作用
 - Output 输出生成 Bundle：Webpack 根据配置将 chunk 合并成一个或多个 bundle 文件。这些文件是最终要在浏览器中加载的静态资源。
 - Plugin 的工作时间点：Plugins 在 Webpack 的整个编译过程中介入，可执行一系列复杂操作，包括但不限于优化、资源管理和环境变量的注入。
 
-2. 资源管理
+## 2. 资源管理
 
 Webpack 将所有类型的资源视为模块。它天然处理 JavaScript，但对于其他类型的文件，如 CSS、图片或 HTML，Webpack 使用各种 loader 将它们转换成有效的模块。这些转换后的模块随后被添加到依赖图中。此外，plugins 提供了进一步处理这些资源的能力，如优化、压缩等。
 
-3. 输出管理
+## 3. 输出管理
 
 经过一系列的处理后，Webpack 根据`webpack.config.js`中定义的 output 选项将资源打包成一个或多个 bundle。这些 bundle 文件是最终要在浏览器中加载的静态资源，它们包含了所有必要的代码和资源。
 
-4. loaders
+## 4. loaders
 
 loader是webpack的核心功能之一，loader作为资源的加载器。loader不仅限于文件转换，还可以包括代码检查、格式化等功能。webpack本质上只能处理js文件，但是提高loaders，webpack可以处理各种类型的资源，比如css、img等资源，类似于翻译官一样，loader把不同的资源转换成webpack可以识别的资源，便于webpack处理。loader是逆向执行的管道操作，在use属性中，可以作为一个数组定义，loader从最后一项加载，最后一项的处理输出作为前一项的处理输入。如`use: ['style-loader', 'css-loader', 'sass-lader']`，webpack首先处理sass-lader，将sass转换为css，然后css-loader再根据sass-loader的输出结果转换为js文件，以此类推，直到处理成最种webpack可以识别的格式。
-
 
 常见的loader有
 - style-loader：将css添加到dom中
@@ -639,7 +638,7 @@ loader是webpack的核心功能之一，loader作为资源的加载器。loader�
 - cache-loader：将loader的结果存入缓存中，一般用于很耗性能的loader
 
 
-5. plugins
+## 5. plugins
    
 plugins是webpack的核心功能之一，通过plugin我们可以在合适的时机对webpack的编译过程介入，以完成更广泛的目的。
 
@@ -696,7 +695,7 @@ Webpack插件的执行机制是基于事件驱动的，这一机制主要通过W
   }
   ```
 
-6. code splitting
+## 6. code splitting
 
 代码切分是 webpack 的优化技术，通过将一个大的 bundle 文件切成小的 chunk，这些 chunk 根据实际需求动态的价值，减少首次加载的时间。webpack 有 3 种方法实现 code splitting
 
@@ -729,11 +728,11 @@ Webpack插件的执行机制是基于事件驱动的，这一机制主要通过W
 
   **将代码进行切分的好处是，可以减少首次加载时间，按需的加载代码。**
 
-7. Module 和 Chunk
+## 7. Module 和 Chunk
    
 module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资源都认为是模块，如 js 文件、css、img 等，这些模块是 webpack 的基本构成单元。而 chunk 则是 webpack 构建过程中的输出单元，由不同的模块组成的，使用代码拆分可以将一个 bundle 拆成多个 chunk，同时又可以用多个 chunk 组合成一个 bundle 输出。总的来说，模块是 Webpack 的基本工作单元，负责具体资源的处理，而 chunk 则是模块在编译过程中的组合体，最终决定了输出文件的结构和性能优化。
 
-8. 文件指纹
+## 8. 文件指纹
 
 用于版本控制或优化缓存，会在文件名中注入一个 hash 值，每当内容发生改变就会生成一个新的 hash 值，有助于浏览器识别。
 
@@ -741,7 +740,7 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
 - Chunkhash：`[name].[chunckhash].js`chunk 发生改变，chunkhash 就会变化
 - Contenthash：`[name].[contenthash].js`文件内容发生改变，contenthash 就会变化
 
-9. 打包 Library
+## 9. 打包 Library
 
   指的是可以将webpack打包成类似于npm包的形式，供其他地方使用，可以将webpack的library打包发布到npm中。
 
@@ -761,14 +760,14 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
     }
   }
   ```
-10. HRM
+## 10. HRM
   热更新是webpack核心功能之一，在4.0以上的版本已经默认开启，用于在开发过程中，当代码被修改后可以自动的更新修改的页面，而不需要手动刷新浏览器，极大的提高开发效率，还可以保留当前页面的状态。
   
 **实现原理**：当我们启动Webpack的开发服务器，它会起一个本地服务，这个服务会实时监控我们的代码文件。一旦发现文件变动，它只会重新编译那些发生变化的部分，而不是整个项目。编译完毕后，Webpack会生成一个包含了更新信息的manifest文件。接着，通过一个WebSocket连接，Webpack把这个manifest发送到我们的浏览器端。浏览器拿到这些信息后，就会去请求那些更新过的模块代码。然后，系统会自动把旧模块替换成新的。如果我们需要，也可以用accept方法来手动管理这些更新过程中的状态转移。万一更新过程出了问题，Webpack会尝试一些错误处理手段，比如刷新整个页面。这样一来，我们就能在开发过程中即时看到变化，又不会丢失当前的应用状态。
 
-11. Tree Shaking
+## 11. Tree Shaking
   webpack里的一个重要概念，用于移除在项目中未被引用的代码，仅支持es模块，因为es模块（import和export）是静态的，而commonJS则是动态的。当移除的文件代码有副作用时，可以在package.json中设置sideEffects属性，将包含有副作用的代码跳过，从而webpack不会去检查它。
-12. Shimming
+## 12. Shimming
    Shimming是一个高级功能，可以为webpack项目定义一些全局变量，以解决在模块化构建过程中存在的兼容性问题，Shimming可以在不修改源代码的情况下为模块提供一个全局变量。比如我们需要在A、B、C三个文件访问同一个变量，默认情况下由于模块化的划分，是没有的，但是我们可以通过Shimming定义一个变量，供这3个文件都可以访问到。
 
    - ProvidePlugin：使用插件为全局定义一个变量，比如为全局引入一个jQuery变量。
@@ -806,14 +805,14 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
 
   ```
 
-13. Source-Map
+## 13. Source-Map
 
 Source Map是一个保存着映射信息的文件，它保存着源代码和被打包编译之后代码的对应关系。因此即使源代码已经被压缩和转换，通过source map仍能准确的找到源代码的位置，方便我们调试。
 
 在webpack的配置中配置devtool属性，开启source-map功能，根据配置的属性，会生成一个或多个.map文件，这些文件保存着源代码的行列信息。当在浏览器打开源代码调试功能时，浏览器就会调用.map文件的信息找出源代码的映射，从而显示源代码，而不显示压缩的代码。
 
 
-14.  MF
+## 14.  MF
 
 MF指的是模块联邦，是webpack5引入的新功能，运行不同的js应用或组件共享代码，跟微前端的概念类似。使用mf可以在应用中加载其他的应用的代码，即便它们是部署在不同的项目中。允许应用在运行时共享代码，而不是在构建时。这意味着应用可以共享实时的、动态的代码。
 
@@ -843,7 +842,7 @@ ModuleFederationPlugin插件实现共享功能
   import('./app/MyCommon')
   ```
 
-15. runtime 和 manifest
+## 15. runtime 和 manifest
   
 runtime可以理解为是一块代码，由webpack在编译的过程中生成，里面包含了程序在运行过程中执行的代码。主要负责程序里所有模块的连接、执行和交互，runtime知道在程序的执行过程中如何去加载模块，如何让模块间有序的工作。
 
@@ -851,7 +850,7 @@ manifest可以理解为是一个保存着各种模块的映射表，通过这张
 
 在webpack打包出来的程序执行时，runtime也会跟着执行，当在执行过程中程序需要加载一个依赖的模块时，runtime就会通过manifest去找到这个模块，确定目标模块的位置，然后按需加载。
 
-16.  webpack 优化手段
+## 16.  webpack 优化手段
 
 ## NPM
 
