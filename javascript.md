@@ -1214,3 +1214,7 @@ HTTPS 的数据传输过程
 ## 10. 定长和不定长数据传输
 
 定长和不定长数据传输是属于 HTTP 传输数据的概念，在 HTTP 中，定长数据传输是指当前发送的数据长度大小是已知的，在头部字段`Content-Length`中定义了传输数据的长度。而不定长数据传输的数据则是指数据的长度是未知的，由服务端动态的生成，不定长数据传输采用了**分块数据传输**的概念，把过长的数据切割成小块然后传输。
+
+## 11. Post请求为什么有时候会发送两次请求
+
+在使用CORS时，浏览器会多发送一个OPTIONS预检请求，请求服务器是否支持当前的请求。在发送可能会对服务器资源产生修改的请求、使用了自定义的请求头、POST发送非简单的Accept内容值、尝试修改和设置cookie这些操作中都会发送一个预测请求。发送的预测请求会在请求头带上`Origin,Access-Control-Request-Method,Access-Control-Request-Headers`字段，询问客户端支持哪些源、哪些请求方法和请问将携带的字段，随后服务端会返回`Access-Control-Allow-Origin,Access-Control-Allow-Method,Access-Control-Allow-Headers`，来响应支持的请求源、方法和字段。
