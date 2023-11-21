@@ -646,7 +646,7 @@ plugins是webpack的核心功能之一，通过plugin我们可以在合适的时
    - HtmlWebpackPlugin：主动生成html入口文件，文件包含打包资源的内容。
    - MissCssExtractPlugin：用于分离css样式为一个独立的文件。
    - HotModuleReplacementPlugin：热更新插件
-   - VueLoaderPlugin：加载出来vue的插件
+   - VueLoaderPlugin：加载处理vue的插件
    - DefinePlugin：定义全局变量的插件
    - ESlintPlugin：用于集成ESlint
 
@@ -851,6 +851,37 @@ manifest可以理解为是一个保存着各种模块的映射表，通过这张
 在webpack打包出来的程序执行时，runtime也会跟着执行，当在执行过程中程序需要加载一个依赖的模块时，runtime就会通过manifest去找到这个模块，确定目标模块的位置，然后按需加载。
 
 ## 16.  webpack 优化手段
+- exclude、include：在Babel中，并非所有的js文件都需要转换。使用exclude把不需要转换的排除文件掉，使用include把需要转换的包含进来，推荐使用include。
+
+- cache-loader：将耗性能的loader结果缓存起来，下次构建时可以读取缓存而不需要重新构建它
+```javascript
+use: ['cache-loader', 'Babel-loader'], //放在需要缓存的loader前面
+```
+
+- thread-loader：开启多个进程池，将转换的插件用在独立的进程中继续，使用方法跟cache-loader一样，放在需要开辟新进程loader的前面。
+
+- TerserWebpackPlugin开启多进程构建和缓存
+
+- HardSourceWebpackPlugin：提升二次构建的时间，第一次构建时会将模块的依赖关系存到缓存中，当下次构建时，只要源文件不发生变化，就会从缓存中使用这些依赖。
+
+- resolve：正确的使用module.resolve属性，可以极大的提高编程时倒入模块的效率
+```javascript
+resolve: {
+  alias: {
+    @util: path.resolve(__dirname, 'src/util') // 定义路径的别名
+  },
+  extension: ['.js', 'vue'], //匹配导入的文件名，导入时可以不指定文件名，从左到右匹配，因此最常用的应该放到最前面，减少尝试次数。
+  mainFiles: ['index'], //当导入一个目录时，可以不指定文件，默认导入目录的index文件
+}
+```
+
+- optimization：配置optimization可以优化打包处理的结果。配置`optimization.splitChunks`抽离依赖中的公共代码为一个chunk，减少打包的体积。配置`optimization.runtimeChunk`可以将运行时的manifest抽离成一个或多个文件。
+
+- tree-shaking
+
+- Babel7优化
+
+- 使用webpack-merge将`webpack.config.js`文件进行环境区分
 
 ## NPM
 
