@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../P6"
+		},
+		{
+			"path": "../vue-main"
+		}
+	],
+	"settings": {}
+}
