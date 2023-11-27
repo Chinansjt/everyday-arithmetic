@@ -491,34 +491,107 @@ subscribers.publish("event", "6");
 ```
 
 # CSS
+## 1.盒模型
+CSS盒模型有两种，一种为标准盒模型，一种为怪异盒模型（IE）盒模型
+- 标准盒模型：`box-sizing：content-box;`默认值
+- 怪异盒模型：`box-sizing：border-box;`宽高度不包括`margin`
 
-### BFC
+## 2.CSS选择器（11种）
+- 类选择器、标签选择器、ID选择器
+- 属性选择器 `input[type="text"]`
+- 后代选择器`div p`，div后面的所有p标签起作用
+- 子类选择器`div > p`，div后面的子元素是p标签的起作用
+- 相邻兄弟选择器`div + p`，跟div同一级别并且是后面的第一个p标签起作用
+- 通用兄弟选择器`div ~ p`，跟div同一级别后面的所有p标签起作用
+- 伪类选择器`div:hover`，用于给div定于特定的状态，如`input:focus`
+- 伪元素选择器`div::before`，用于在div的前面加入一个元素。
+- 组合选择器`div, .class, #id`
 
-**_解释_**：BFC（块级格式化上下文），指的是在文档流中，独立出来一个渲染块，bfc 里面的元素布局不影响外面的布局
+> 伪类选择器主要用于描述一个元素的状态的改变，而伪类选择器更多用来给一个元素的前后插入一个样式
+
+## 3.CSS优先级（6个）
+CSS的优先级排序根据每种的选择器的特异性值相加，最高的值就是最终的显示结果
+!important > 内联样式(1000)  > ID选择器(100) > 类选择器、伪类、属性选择器(10) > 标签选择器、伪元素选择器(1) > 其他的选择器
+
+比如 `.class #id div p`这个的特异性值 10 + 100 + 1 + 1 = 110
+
+## 4.BFC
+BFC（块级格式化上下文），指的是在文档流中，独立出来一个渲染块，bfc 里面的元素布局不影响外面的布局
 
 会创建 BFC 的元素有
 
-> - float 为 left、right
-> - overflow 不为 visible
-> - display 为 flex、inline-block、table-cell、grid 等
-> - position 为 absolute、flexed
-> - 根元素
+- float 为 left、right
+- overflow 不为 visible
+- display 为 flex、inline-block、table-cell、grid 等
+- position 为 absolute、flexed
+- 根元素
 
 BFC 的布局规则是
-
-> - BFC 内的元素一块一块的垂直折叠
-> - BFC 内的两个相邻的块级元素会发生 margin 重叠
-> - BFC 内浮动的元素高度也会被计算（用于清除浮动）
-> - BFC 里面的元素布局不会影响到外面的元素的布局
+- BFC 内的元素一块一块的垂直折叠
+- BFC 内的两个相邻的块级元素会发生 margin 重叠
+- BFC 内浮动的元素高度也会被计算（用于清除浮动）
+- BFC 里面的元素布局不会影响到外面的元素的布局
 
 BFC 的作用
 
-> - 消除两个相邻的元素 margin 重叠问题，把其中一个元素添加一个新的 BFC 里面
-> - 浮动元素会脱离父元素的文档流，此时可以给父元素创建一个 BFC
-> - 解决文字环绕浮动元素的问题。
-> - 用于实现多栏布局，用浮动实现侧边栏固定
-
+- 消除两个相邻的元素 margin 重叠问题，把其中一个元素添加一个新的 BFC 里面
+- 浮动元素会脱离父元素的文档流，此时可以给父元素创建一个 BFC
+- 解决文字环绕浮动元素的问题。
+- 用于实现多栏布局，用浮动实现侧边栏固定
+  
 清除浮动可以给父容器添加 BFC，还可以使用 clearfix 定义一个伪类元素 clear：both
+
+## 5.CSS3
+
+- 引入了更多的选择器，如属性选择器、伪类选择器、伪元素选择器
+- 盒模型控制`box-sizing`
+- 新增了文本效果，如文字阴影`text-shadow`、文字下沉`::first-letter`
+- 多背景支持，`background`设置多个背景，`border-image`设置边框为背景图片，`border-radius`设置圆角，`box-shadow`设置盒子阴影效果。
+- 2D/3D转换，`transformation`控制元素平移、转换、放大等效果
+- 动画，`keyframes`控制关键字帧，`animation`动画效果
+- 过渡，`transition`控制元素的过度效果
+- flex和grid布局
+- colors可以设置RGBA，控制透明度等
+- 媒体查询，`@media screen and(min-width: 600px) { .class {}}`当屏幕至少为600px时，应用`.class`这个类。
+
+## 6.CSS样式隔离
+CSS样式隔离的目的是确保CSS样式只应用于它们应该影响的特定元素或者组件，避免全局的意外冲突。通常我们在定义样式的名字时，遵守一定的命名约定，从而降低冲突。在vue中，可以给style定义一个`scoped`属性。
+
+## 7.层叠上下文
+层叠上下文用于控制，元素在当前层的展示位置，`z-index`的值越大，显示的层级就更高，将优先展现在屏幕上。层叠上下文只能在同一个父元素下的子元素比较才起作用，比如
+```html
+<h1>
+  <h2><h3></h3></h2>
+  <h4></h4>
+</h1>
+```
+当h1创建了层叠上下文，那么h3可以和h4相对于h1比较层级。
+
+创建层叠上下文的方法有
+- 根元素
+- 设置position的元素
+- opacity，transform，filter等不是默认值
+- flex、grid的直接子元素
+
+## 7. div居中(6种)
+div居中可以分为块元素和行内元素居中
+- 使用flex实现水平、垂直居中
+- 使用gird实现水平、垂直居中`display: gird; place-items: center`
+- 使用 position 实现水平、垂直居中
+- 使用 `margin: 0 auto` 实现水平居中，
+- 对于行内元素使用`line-heigh`实现垂直居中，使用`text-align`实现水平居中。
+
+## 8. float
+浮动可用于环绕效果，当设置了浮动的元素会脱离文档流，而非浮动的元素则会环绕它的周围。
+
+清除浮动用于解决浮动元素导致的高度塌陷问题，可以用一个伪元素定义一个`clear: both`来清除浮动，为其父元素定义`overflow: hidden`，或者设置`flex`
+
+## 9. flex布局
+- `flex: 1 0 200px`表示`flex-grow: 1; flex-shrink: 0; flex-basis: 200px`的简写
+- 当 Flex 容器空间充足时，`flex-grow` 决定了项目如何分配多余的空间，默认值 0 ，不会增长。
+- 当 Flex 容器空间紧张时，`flex-shrink` 决定了项目如何减少它们的尺寸以适应容器，默认值为 1 会缩小。
+- `align-self`: 允许单个Flex项目有不同于其他项目的对齐方式。
+
 
 # 6、Vue 源码
 
