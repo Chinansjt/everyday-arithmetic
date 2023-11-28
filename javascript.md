@@ -491,12 +491,16 @@ subscribers.publish("event", "6");
 ```
 
 # CSS
+
 ## 1.盒模型
+
 CSS盒模型有两种，一种为标准盒模型，一种为怪异盒模型（IE）盒模型
+
 - 标准盒模型：`box-sizing：content-box;`默认值
 - 怪异盒模型：`box-sizing：border-box;`宽高度不包括`margin`
 
 ## 2.CSS选择器（11种）
+
 - 类选择器、标签选择器、ID选择器
 - 属性选择器 `input[type="text"]`
 - 后代选择器`div p`，div后面的所有p标签起作用
@@ -510,12 +514,14 @@ CSS盒模型有两种，一种为标准盒模型，一种为怪异盒模型（IE
 > 伪类选择器主要用于描述一个元素的状态的改变，而伪类选择器更多用来给一个元素的前后插入一个样式
 
 ## 3.CSS优先级（6个）
+
 CSS的优先级排序根据每种的选择器的特异性值相加，最高的值就是最终的显示结果
 !important > 内联样式(1000)  > ID选择器(100) > 类选择器、伪类、属性选择器(10) > 标签选择器、伪元素选择器(1) > 其他的选择器
 
 比如 `.class #id div p`这个的特异性值 10 + 100 + 1 + 1 = 110
 
 ## 4.BFC
+
 BFC（块级格式化上下文），指的是在文档流中，独立出来一个渲染块，bfc 里面的元素布局不影响外面的布局
 
 会创建 BFC 的元素有
@@ -527,6 +533,7 @@ BFC（块级格式化上下文），指的是在文档流中，独立出来一�
 - 根元素
 
 BFC 的布局规则是
+
 - BFC 内的元素一块一块的垂直折叠
 - BFC 内的两个相邻的块级元素会发生 margin 重叠
 - BFC 内浮动的元素高度也会被计算（用于清除浮动）
@@ -555,26 +562,33 @@ BFC 的作用
 - 媒体查询，`@media screen and(min-width: 600px) { .class {}}`当屏幕至少为600px时，应用`.class`这个类。
 
 ## 6.CSS样式隔离
+
 CSS样式隔离的目的是确保CSS样式只应用于它们应该影响的特定元素或者组件，避免全局的意外冲突。通常我们在定义样式的名字时，遵守一定的命名约定，从而降低冲突。在vue中，可以给style定义一个`scoped`属性。
 
 ## 7.层叠上下文
+
 层叠上下文用于控制，元素在当前层的展示位置，`z-index`的值越大，显示的层级就更高，将优先展现在屏幕上。层叠上下文只能在同一个父元素下的子元素比较才起作用，比如
+
 ```html
 <h1>
   <h2><h3></h3></h2>
   <h4></h4>
 </h1>
 ```
+
 当h1创建了层叠上下文，那么h3可以和h4相对于h1比较层级。
 
 创建层叠上下文的方法有
+
 - 根元素
 - 设置position的元素
 - opacity，transform，filter等不是默认值
 - flex、grid的直接子元素
 
 ## 7. div居中(6种)
+
 div居中可以分为块元素和行内元素居中
+
 - 使用flex实现水平、垂直居中
 - 使用gird实现水平、垂直居中`display: gird; place-items: center`
 - 使用 position 实现水平、垂直居中
@@ -582,16 +596,95 @@ div居中可以分为块元素和行内元素居中
 - 对于行内元素使用`line-heigh`实现垂直居中，使用`text-align`实现水平居中。
 
 ## 8. float
+
 浮动可用于环绕效果，当设置了浮动的元素会脱离文档流，而非浮动的元素则会环绕它的周围。
 
 清除浮动用于解决浮动元素导致的高度塌陷问题，可以用一个伪元素定义一个`clear: both`来清除浮动，为其父元素定义`overflow: hidden`，或者设置`flex`
 
 ## 9. flex布局
+
 - `flex: 1 0 200px`表示`flex-grow: 1; flex-shrink: 0; flex-basis: 200px`的简写
 - 当 Flex 容器空间充足时，`flex-grow` 决定了项目如何分配多余的空间，默认值 0 ，不会增长。
 - 当 Flex 容器空间紧张时，`flex-shrink` 决定了项目如何减少它们的尺寸以适应容器，默认值为 1 会缩小。
 - `align-self`: 允许单个Flex项目有不同于其他项目的对齐方式。
 
+## 10. 移动端适配
+
+- 使用相对单位，如em、rem、vh、vw等
+- 使用媒体查询
+- 使用 Flex 进行弹性布局
+- 使用流式布局，不使用相对单位使用百分比单位
+
+## 11. em、rem、rpx的原理
+
+3者都是普遍用于移动端适配
+
+- em单位大小相对于直接父元素的字体大小来决定
+- rem单位相对于跟元素的字体大小来决定，通过设定根元素的字体大小，当后面使用rem时，都会以根元素字体大小来定义
+- rpx是微信小程序的单位，用于适配不同的屏幕大小。在微信小程序中，屏幕被分为750份，在宽度750px的屏幕中，1rpx就等于1px。微信小程序回按照这一比例自动的适配不同的屏幕大小
+
+## 12. CSS性能优化
+
+养成良好的编程习惯，可以很大程度上避免一些问题
+
+- 减少重绘和重排
+- 优化选择器，避免使用标签选择器，推荐使用类选择器。避免过度的嵌套选择器，这样会增加浏览器匹配的负担，同时应尽量避免使用*通配符选择器，这样会对页面上的每一个元素都进行适配。
+- 减少CSS的体积，使用压缩工具将CSS进行压缩。
+- 使用外联样式表，这样有利于浏览器缓存，并且把外联样式提前，放到head标签中，会跟页面并行加载
+- 使用css模块化，按需加载
+- 合理的使用png、jpg、svg、webp格式的图片，以优化图片的加载时间。
+- 使用link加载样式，避免使用@import。link加载是跟页面并行加载的，js可以动态的获取和修改，是所有浏览器支持的。而@import是从一个CSS文件导入另一个CSS文件专门用于加载CSS文件，会导致渲染延迟，并且不支持js操作样式。
+- 尽量使用flex布局，通常更高效。
+- 合并css文件，如果页面加载10个css文件,每个文件1k，那么也要比只加载一个100k的css文件慢。
+- 不要在ID选择器前面进行嵌套，ID本来就是唯一的而且权限值大，嵌套完全是浪费性能。
+- 建立公共样式类，把相同样式提取出来作为公共类使用。
+- 巧妙运用css的继承机制，如果父节点定义了，子节点就无需定义。
+- 拆分出公共css文件，对于比较大的项目可以将大部分页面的公共结构样式提取出来放到单独css文件里，这样一次下载 后就放到缓存里，当然这种做法会增加请求，具体做法应以实际情况而定。
+- 不用css表达式，表达式只是让你的代码显得更加酷炫，但是对性能的浪费可能是超乎你想象的。
+- 少用css rest，可能会觉得重置样式是规范，但是其实其中有很多操作是不必要不友好的，有需求有兴趣，可以选择normolize.css。
+- cssSprite，合成所有icon图片，用宽高加上background-position的背景图方式显现icon图，这样很实用，减少了http请求。
+
+## 13. 移动端兼容问题汇总
+
+- 屏幕适配大小：使用rem或媒体查询等适应不同大小的屏幕
+- 触摸事件：在移动端中使用触摸屏操作，保障需要点击触摸的元素足够大，才能确保有效的点击。
+- 在meta设置`viewport`来控制布局在移动端上的表现
+- 在不同的移动端浏览器对js和css的实现可能不一致，因此使用新特性应该先看好兼容性。
+- 在移动端中尽量使用flex布局，可以解决不同浏览器之间的布局不一致问题
+
+## 14. 图片格式
+
+- PNG：提供无损压缩支持透明度，适用于需要高质量的背景图或透明的场景使用，但是文件大小通常也更大
+- JPG：支持高压缩率，适用于色彩丰富的图片，文件大小通常都更小，加载快，不正常透明图，有损压缩
+- SVG：矢量图形，xml格式，不需要发送请求，可以无限缩放而不失真，支持透明，可以压缩，适用于icon小图标，文件小，但是不适合复杂的图像
+- GIF：支持简单的动画和透明度，但是色彩有限，不适合复杂或高质量的图像
+- WebP：谷歌的现代图片格式，提供无损和有损压缩，使用于优化加载时间的网页，特别是移动端，文件体积小，支持透明和动画，但是是新的格式在旧的浏览器可能不兼容。
+
+## 15. preload和prefetch
+
+- preload用于优化当前页面的资源加载，即在当前的页面中哪些资源是可能需要的应该提前加载
+- prefetch用于优化未来导航页面的加载，即在未来导航到的页面中哪些资源是可能需要的应该提前加载，浏览器可以在空闲时间就加载资源而不必等到需要的时候再加载
+
+使用方式：`<link rel="preload" href="main.js" as="script" />`
+
+## 16. src和href
+
+- src用于用于嵌入内容，当元素需要保护其他资源时使用，会阻塞浏览器渲染
+- href用于建立连接，用于连接另外一个页面，不会阻塞浏览器渲染
+
+## 17. meta标签
+
+meta标签定义在head标签内，用于定义浏览器的元数据。提供了关于 HTML 文档的信息，如字符集、控制视口行为、页面描述、关键词、作者、缓存行为等
+
+- 指定字符集：`<meta charset="utf-8"/>`
+- 控制视口行为：`<meta name="viewport" content="with=device-width, initial-scale=1" />`
+- 页面描述：`<meta name="description" content="这是一个页面" />`
+- 设置关键字：`<meta name="keywords" content="关键字1，关键字二" />`
+- 设置作者：`<meta name="auth" content="ning" />`
+- 用于缓存：`<meta http-equiv="Catch-Control" content="no-store" />` 
+- 兼容性模式：`<meta http-equiv="X-UA-Compatible" content="IE=edge" />` 用于指定 Internet Explorer 使用最新的渲染引擎
+
+`http-equiv`属性主要用于html文档控制http响应头的行为。
 
 # 6、Vue 源码
 
@@ -704,6 +797,7 @@ Webpack 将所有类型的资源视为模块。它天然处理 JavaScript，但�
 loader是webpack的核心功能之一，loader作为资源的加载器。loader不仅限于文件转换，还可以包括代码检查、格式化等功能。webpack本质上只能处理js文件，但是提高loaders，webpack可以处理各种类型的资源，比如css、img等资源，类似于翻译官一样，loader把不同的资源转换成webpack可以识别的资源，便于webpack处理。loader是逆向执行的管道操作，在use属性中，可以作为一个数组定义，loader从最后一项加载，最后一项的处理输出作为前一项的处理输入。如`use: ['style-loader', 'css-loader', 'sass-lader']`，webpack首先处理sass-lader，将sass转换为css，然后css-loader再根据sass-loader的输出结果转换为js文件，以此类推，直到处理成最种webpack可以识别的格式。
 
 常见的loader有
+
 - style-loader：将css添加到dom中
 - css-loader：处理css，将css转换成js模块
 - vue-style-loader：处理vue的样式，将vue的css添加到dom中
@@ -711,24 +805,23 @@ loader是webpack的核心功能之一，loader作为资源的加载器。loader�
 - babel-loader：babel转换器，处理将es6+的语法转换成es5语法，兼容旧的浏览器。
 - cache-loader：将loader的结果存入缓存中，一般用于很耗性能的loader
 
-
 ## 5. plugins
-   
+
 plugins是webpack的核心功能之一，通过plugin我们可以在合适的时机对webpack的编译过程介入，以完成更广泛的目的。
 
 常见的插件有
-   - HtmlWebpackPlugin：主动生成html入口文件，文件包含打包资源的内容。
-   - MissCssExtractPlugin：用于分离css样式为一个独立的文件。
-   - HotModuleReplacementPlugin：热更新插件
-   - VueLoaderPlugin：加载处理vue的插件
-   - DefinePlugin：定义全局变量的插件
-   - ESlintPlugin：用于集成ESlint
+
+- HtmlWebpackPlugin：主动生成html入口文件，文件包含打包资源的内容。
+- MissCssExtractPlugin：用于分离css样式为一个独立的文件。
+- HotModuleReplacementPlugin：热更新插件
+- VueLoaderPlugin：加载处理vue的插件
+- DefinePlugin：定义全局变量的插件
+- ESlintPlugin：用于集成ESlint
 
 **plugin的工作机制**
 
 plugin在webpack构建的整个过程中都会执行，每个时间点都对应着不同的hook，用来控制构建的过程。首先webpack在开始构建时，会访问plugins属性，plugin是一个class类，通过 new 调用plugin，会调用plugin实例的apply方法，webpack会给apply传入一个compiler属性，compiler在整个webpack构建过程中只生成一次，通过在apply内部调用compiler属性的hooks，可以对应webpack不同的构建阶段。其中webpack通过Tapable机制控制整个过程，Tapable将webpack的所有插件串联起来，plugin通过加入Tapable机制可以改变webpack的运作。Tapable是一个工具库，提供tap、asyncTap、tapPromise方法，每一个hooks都包含着这3个方法，可以控制hook的同步或异步执行。其中compiler又包含了compilation hook，在编译阶段运行，与compiler不同，compilation在每次构建的过程中都会创建一个新的。compilation 又存在不同的hooks。整个构建的过程都围绕了complier和compilation展开。
 
-   
 Webpack插件的执行机制是基于事件驱动的，这一机制主要通过Webpack内部的一个名为Tapable的库实现。在这个框架中，插件可以监听一系列的事件钩子（Hooks），这些钩子分布在Webpack的构建流程的不同阶段。
 
 首先，Webpack的插件是一个类，这个类必须实现一个名为apply的方法。当Webpack启动时，它会遍历配置中的所有插件，对每个插件实例调用其apply方法。在这个方法内部，插件通过提供给apply方法的compiler对象注册它需要监听的钩子。
@@ -803,7 +896,7 @@ Webpack插件的执行机制是基于事件驱动的，这一机制主要通过W
   **将代码进行切分的好处是，可以减少首次加载时间，按需的加载代码。**
 
 ## 7. Module 和 Chunk
-   
+
 module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资源都认为是模块，如 js 文件、css、img 等，这些模块是 webpack 的基本构成单元。而 chunk 则是 webpack 构建过程中的输出单元，由不同的模块组成的，使用代码拆分可以将一个 bundle 拆成多个 chunk，同时又可以用多个 chunk 组合成一个 bundle 输出。总的来说，模块是 Webpack 的基本工作单元，负责具体资源的处理，而 chunk 则是模块在编译过程中的组合体，最终决定了输出文件的结构和性能优化。
 
 ## 8. 文件指纹
@@ -819,6 +912,7 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
   指的是可以将webpack打包成类似于npm包的形式，供其他地方使用，可以将webpack的library打包发布到npm中。
 
   实现一个库可以在output中配置
+
   ```javascript
   output: {
     library: {
@@ -826,7 +920,9 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
     }
   }
   ```
+
   同时，如果在库的实现过程中，引入了其他的库，默认情况下打包会把它一起打包，但是可以使用externals排除掉指定的库，从而不打包它。
+
   ```javascript
   module.exports = {
     externals: {
@@ -834,17 +930,23 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
     }
   }
   ```
+
 ## 10. HRM
+
   热更新是webpack核心功能之一，在4.0以上的版本已经默认开启，用于在开发过程中，当代码被修改后可以自动的更新修改的页面，而不需要手动刷新浏览器，极大的提高开发效率，还可以保留当前页面的状态。
   
 **实现原理**：当我们启动Webpack的开发服务器，它会起一个本地服务，这个服务会实时监控我们的代码文件。一旦发现文件变动，它只会重新编译那些发生变化的部分，而不是整个项目。编译完毕后，Webpack会生成一个包含了更新信息的manifest文件。接着，通过一个WebSocket连接，Webpack把这个manifest发送到我们的浏览器端。浏览器拿到这些信息后，就会去请求那些更新过的模块代码。然后，系统会自动把旧模块替换成新的。如果我们需要，也可以用accept方法来手动管理这些更新过程中的状态转移。万一更新过程出了问题，Webpack会尝试一些错误处理手段，比如刷新整个页面。这样一来，我们就能在开发过程中即时看到变化，又不会丢失当前的应用状态。
 
 ## 11. Tree Shaking
+
   webpack里的一个重要概念，用于移除在项目中未被引用的代码，仅支持es模块，因为es模块（import和export）是静态的，而commonJS则是动态的。当移除的文件代码有副作用时，可以在package.json中设置sideEffects属性，将包含有副作用的代码跳过，从而webpack不会去检查它。
+
 ## 12. Shimming
+
    Shimming是一个高级功能，可以为webpack项目定义一些全局变量，以解决在模块化构建过程中存在的兼容性问题，Shimming可以在不修改源代码的情况下为模块提供一个全局变量。比如我们需要在A、B、C三个文件访问同一个变量，默认情况下由于模块化的划分，是没有的，但是我们可以通过Shimming定义一个变量，供这3个文件都可以访问到。
 
-   - ProvidePlugin：使用插件为全局定义一个变量，比如为全局引入一个jQuery变量。
+- ProvidePlugin：使用插件为全局定义一个变量，比如为全局引入一个jQuery变量。
+
    ```javascript
    plugins: [
     new webpack.providePlugin({
@@ -853,14 +955,17 @@ module 和 chunk 都是 webpack 的核心概念，在 webpack 中，把一切资
    ]
    ```
 
-   - import-loader：提供更细粒度的Shimming，比如在指定文件下访问window
+- import-loader：提供更细粒度的Shimming，比如在指定文件下访问window
+
    ```javascript
     rules: [{
       test: require.resolve('./src/index.js'),
       use: 'import-loader?this=>window' ///为index.js提供一个访问this的变量
     }]
    ```
-   - export-loader：在文件中，没有使用export将模块导出，那么可以使用这个加载器将模块导出。
+
+- export-loader：在文件中，没有使用export将模块导出，那么可以使用这个加载器将模块导出。
+
   ```javascript
     // 在index中定义两个变量，但是没有用模块化导出
     var a = 'a'
@@ -885,12 +990,12 @@ Source Map是一个保存着映射信息的文件，它保存着源代码和被�
 
 在webpack的配置中配置devtool属性，开启source-map功能，根据配置的属性，会生成一个或多个.map文件，这些文件保存着源代码的行列信息。当在浏览器打开源代码调试功能时，浏览器就会调用.map文件的信息找出源代码的映射，从而显示源代码，而不显示压缩的代码。
 
-
 ## 14.  MF
 
 MF指的是模块联邦，是webpack5引入的新功能，运行不同的js应用或组件共享代码，跟微前端的概念类似。使用mf可以在应用中加载其他的应用的代码，即便它们是部署在不同的项目中。允许应用在运行时共享代码，而不是在构建时。这意味着应用可以共享实时的、动态的代码。
 
 ModuleFederationPlugin插件实现共享功能
+
   ```javascript
   //在主应用中使用remotes加载远程暴露出来的组件
   plugins: [
@@ -925,9 +1030,11 @@ manifest可以理解为是一个保存着各种模块的映射表，通过这张
 在webpack打包出来的程序执行时，runtime也会跟着执行，当在执行过程中程序需要加载一个依赖的模块时，runtime就会通过manifest去找到这个模块，确定目标模块的位置，然后按需加载。
 
 ## 16.  webpack 优化手段
+
 - exclude、include：在Babel中，并非所有的js文件都需要转换。使用exclude把不需要转换的排除文件掉，使用include把需要转换的包含进来，推荐使用include。
 
 - cache-loader：将耗性能的loader结果缓存起来，下次构建时可以读取缓存而不需要重新构建它
+
 ```javascript
 use: ['cache-loader', 'Babel-loader'], //放在需要缓存的loader前面
 ```
@@ -939,6 +1046,7 @@ use: ['cache-loader', 'Babel-loader'], //放在需要缓存的loader前面
 - HardSourceWebpackPlugin：提升二次构建的时间，第一次构建时会将模块的依赖关系存到缓存中，当下次构建时，只要源文件不发生变化，就会从缓存中使用这些依赖。
 
 - resolve：正确的使用module.resolve属性，可以极大的提高编程时导入模块的效率
+
 ```javascript
 resolve: {
   alias: {
@@ -972,6 +1080,7 @@ Vite是一个更现代的前端构建工具，相比于其他的js构建工具�
 ## 2. 工作原理
 
 Vite的工作原理在生产和开发模式有所不同
+
 - 在开发模式中，vite会创建一个本地的服务器，在这个服务器中，并不会像其他构造工具一样会对工程进行一次编译，而是利用了浏览器对原生ES模块的支持，当应用请求一个模块时，请求会直接去Vite服务器获取。在获取的过程中，vite会实时的对模块进行转译，vite仅处理当前请求的模块，也就是说，除了当前请求的模块以外，其他的模块还是源文件，并不会对这些模块进行构建，因此大大的提高了应用的启动速度。vite还支持快速的HRM，当修改的文件发生变化时，vite只更新当前模块，而不是整个页面，因此可以做到秒响应修改。vite使用ESBuild进行预构建，也就是说对于第三方的库，vite首次启动时会对它进行预构建，下次使用时则速度更快。
 
 - 在生产模式下，因为 Rollup 在优化和代码分割方面提供了更成熟的功能，适合生产环境，vite使用Rollup进行打包。Rollup打包过程包括代码分割、动态导入以及针对应用的特定优化如tree-shaking、压缩等。此外，vite还支持懒加载、预渲染和服务端渲染等高级应用。
@@ -983,6 +1092,7 @@ Vite的工作原理在生产和开发模式有所不同
 ## 4. vite插件机制
 
 vite插件采用Rollup插件机制，并在其基础上做了一些扩展。
+
 ```javascript
 //一个简单的vite插件
 export default function myPlugin(options = {}) {
@@ -1058,6 +1168,7 @@ Webpack和Vite都是现代前端工程中广泛使用的构建工具，但是它
 # Babel
 
 ## 1. 工作原理
+
 Babel通过解析、转换、生成这三个步骤将现代的JS代码转为向后兼容的代码。这个过程通过词法分析和语法分析产生 AST，然后通过插件修改这个 AST，最后将 AST 转换回 JavaScript 代码。
 
 **解析**：Babel将源代码字符串进行**词法分析**，将代码分解成一个个Tokens，这些Tokens是代码的最小单位，然后通过**语法分析**根据JS的规则将Tokens转换成一个AST树。
@@ -1067,12 +1178,12 @@ Babel通过解析、转换、生成这三个步骤将现代的JS代码转为向�
 **生成**：将新的AST再转换成原始的代码结构，功能没有修改，但是语法已经进行了修改。
 
 ## 2. 基础配置
+
 Babel的基础配置通常包括preset和plugins这两个配置。
 
 - preset是一个高效配置Babel插件的方法，可以理解为它是一组插件的集合，Babel的一个插件处理一个功能，而preset就是一组插件的集合。有了preset可以大大简化Babel的配置，从而不需要一个一个的引入插件。常用的插件有preset-env、vue/cli-plugin-babel/preset。
 
 - plugin是Babel实现代码转换的具体结构，一个插件对应一个转换功能，比如`babel/plugin-transform-arrow-functions`用于转换箭头函数。
-
 
 # TCP
 
