@@ -448,6 +448,29 @@ const uniqueArray3 = Array.from(arrMap.keys())
 - Promise.race()：接收Promise对象集合，返回最先执行完成的结果，不管是成功还是失败
 - Promise.any()：接收Promise对象集合，当其中的一个Promise执行成功，返回执行成功的结果，如果都失败，返回失败的集合
 
+## 10. async/await
+```javascript
+async function fetchData() {
+    try {
+        // 等待异步操作（例如网络请求）完成
+        const response = await fetch('https://example.com/data');
+        const data = await response.json();
+        return data; // 返回的是一个解决的 Promise
+    } catch (error) {
+        // 处理异步操作中的错误
+        console.error('Error fetching data:', error);
+        throw error; // 抛出异常将返回一个拒绝的 Promise
+    }
+}
+
+// 使用 async 函数
+fetchData().then(data => {
+    console.log('Fetched data:', data);
+}).catch(error => {
+    console.error('Error:', error);
+});
+```
+
 # 设计模式
 
 ## 工厂模型
