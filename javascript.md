@@ -2,7 +2,9 @@
 
 **这里记录我在学习过程中记的笔记，方便我日后复习巩固**
 
-# JS 数组
+# JS
+
+## 1.数组
 
 - **push()**：在数组的尾部插入一个或多个元素，返回插入后数组的长度。
 - **pop()**：在数组的尾部删除一个元素，返回被删除的元素。
@@ -31,9 +33,9 @@
   
   > 其中会改变原数组的方法有 push、pop、shift、unshift、splice、reverse、sort。
 
-# JS 对象
+## 2.对象
 
-## 类型检测
+### 类型检测
 
 **_解释_**：js 类型检测指是判断一个变量的类型及构造方式，分为两种类型：基础类型和引用类型；其中基础类型包括 String、Number、Boolean、undefine、null、symbol，引用类型包括 Object、Function、Array。
 
@@ -42,7 +44,7 @@
 3. **contractor**：每个对象都有一个 constructor 属性，指向该对象的构造函数
 4. **Object.prototype.toString.call()**：更精确的判断变量的类型，可以精确判断是哪一种类型。
 
-## 对象创建
+### 对象创建
 
 **_解释_**：对象的创建指的是在 js 中创建一个对象的过程，有工厂模式、构造函数模式、原型模式、Class 四种模式
 
@@ -101,7 +103,7 @@
    let newObj = new CreateObj("name", 26);
    ```
 
-## 继承
+### 继承（7种）
 
 **_解释_**：JS 继承是一种机制，允许我们用一个对象继承另一个对象的属性和方法，这使得可以共用现有代码。同时允许我们在子类中添加或修改继承到的方法和属性。
 
@@ -344,15 +346,107 @@
 
 > **寄生组合继承**：寄生组合继承将组合继承进一步改进，解决了子对象修改父对象时对其他子对象产生影响的问题，同时避免了原型链中无法获取原型链上的属性和参数，以及不能传递参数给父对象的问题。寄生组合继承结合了各种继承方式的优点，是目前大多数库使用的高效继承方法。
 
-# 迭代器和生成器
+## 3.迭代器和生成器
 
-## 迭代器
+- 迭代器：迭代器提供一个遍历集合的统一接口，他是一个特殊的对象。迭代器通常包含一个next方法，该方法返回两个值。如果一个对象想要被for of遍历，需要在内部实现一个迭代器
+```javascript
+const array = [1,2,3]
+const iterator = array[Symbol.iterator]() //创建一个迭代器
+const result = iterator.next() //提供了一个统一的接口来遍历这个集合
+```
 
-**_解释_**：迭代器去一个对象，用于定义可以迭代的协议。对象是无法迭代的，因此可以手动定义一个迭代器，用 for of 迭代。
+- 生成器：生成器是 es6 的一个函数，和普通函数不同，生成器里面的代码不会一下子执行完，可以控制暂停和恢复执行。该函数返回一个生成器对象。
+```javascript
+function* generator() {
+  yield 1;
+  yield 2;
+}
+const numberGenerator = generator() //创建一个生成器，不会立即执行
+const result = numberGenerator.next()  //执行生成器，直到遇见yield，就返回yield的值
+```
 
-## 生成器
+## 4.IIFE表达式
+IIFE在js中定义并且立即执行的函数，主要用于创建私有作用域，可以有效的封装和隔离代码，避免变量污染全局命名空间
+```javascript
+(function () {
+//这里的作用域是私有的，不会污染到全局的命名空间，在函数完毕之后，这里的作用域会被摧毁
+})()
+```
 
-**_解释_**：生成器是 es6 的一个函数，和普通函数不同，生成器里面的代码不会一下子执行完，可以控制暂停和恢复执行。改函数返回一个生成器对象。
+## 5.函数柯里化
+函数柯里化是指将一个接收多个参数的函数转为每次只接收一个参数的嵌套函数表现形式。柯里化的主要目的是将多参数的函数转为一个参数序列，这样可以逐个的使用这些参数
+```javascript
+//柯里化的简单实现
+function add(a){
+  return function(b) {
+    return function(c) {
+      return a + b + c
+    }
+  }
+}
+add(1)(2)(3)
+
+//柯里化的高级实现
+function curriedAdd(fun) {
+  return function curried(...args1) {
+    //当传入的参数数量等于或多于原函数时，则直接调用
+    if(fun.length >= args.length) {
+      return fun.apply(this, args1)
+    } else {
+      //如果少于则是柯里化调用，返回一个参数进行接收剩余参数
+      return function(...args2) {
+         return curried(this, args1.concat(args2))
+      }
+    }
+  }
+}
+
+const curriedFun = curriedAdd(fun)
+curriedFun(1,2)(3) //可以自由组合入参数量
+```
+
+## 6. Map、Set和WeakMap、WeakSet
+是es6的新增数据结构，用`new Map()`等创建一个方法，可以执行增删查的操作，获取长度等
+- Map是保存键值对的集合，key可以是任意类型的值
+- Set是保存唯一值的集合，value可以是任意类型，但是必须是唯一的
+- WeakMap和WeakSet都是前两者的弱引用，即当原始的引用被清除后，保存在Weak里的值也会被清除掉，有利于垃圾回收机制回收，是不可遍历的 
+
+Set可用于数组去重`[...new Set(array)]`
+
+## 7. 数组去重方法（4种）
+```javascript
+const array = [1,2,2,3,1,3]
+//1.用 Set 
+const uniqueArray1 = [...new Set(array)]
+//2、用fitter
+const uniqueArray2 = array.fitter((item, index) => array.indexof(item) === index)
+//3、用Map
+const arrMap = new Map()
+array.forEach((item) => arrMap.set(item, true))
+const uniqueArray3 = Array.from(arrMap.keys())
+//4、先排序后去重
+```
+
+## 8. 数据类型检测（5种）
+
+- typeOf：只能准确检测基础类型，null、数组和对象检测都是`object`，不能判断基础内建对象
+- instanceof: 检测是否属于原型链上的属性， 如`[] instanceof Array`
+- constructor：检测是否是该类型的构造函数，`([]).constructor === Array`
+- Object.toString.call()：准确无误的判断数据类型，`Object.prototype.toString.call([]) === '[object Array]'`
+- Array.isArray()：只能判断数组
+
+## 9. Promise
+用于函数的异步编程，解决传统方法的回掉地狱问题
+
+- 实例方法有`promise.then(),promise.catch(),promise.finally()`
+
+**静态方法**
+- Promise.resolve()：返回一个Promise对象，视为成功的结果
+- Promise.reject()：返回一个Promise对象，视为失败的结果
+- Promise.all()：接收一个Promise对象集合，全部执行完成返回执行结果的数组，如果有一项失败，则返回对应的失败
+- Promise.arrSettled()：等待所有的Promise都执行完成，返回对应的结果集合，不管是成功还是失败
+- Promise.race()：接收Promise对象集合，返回最先执行完成的结果，不管是成功还是失败
+- Promise.any()：接收Promise对象集合，当其中的一个Promise执行成功，返回执行成功的结果，如果都失败，返回失败的集合
 
 # 设计模式
 
@@ -685,6 +779,35 @@ meta标签定义在head标签内，用于定义浏览器的元数据。提供了
 - 兼容性模式：`<meta http-equiv="X-UA-Compatible" content="IE=edge" />` 用于指定 Internet Explorer 使用最新的渲染引擎
 
 `http-equiv`属性主要用于html文档控制http响应头的行为。
+
+## 18. HTML5 
+
+- 语意化标签，header、footer、section、nav标签等
+- localStorage、sessionStorage
+- 表单的类型，`input type="email, date"`等
+- 对图形图像的支持，Canvas、SVG，还加了video、audio音频的支持
+- web worker，web socket的支持
+- 拖放API、geolocation、history、postMessage等
+
+## 19. CSS绘制三角形
+
+- border：用border配置4个边的属性，设置其中一个的颜色，其他设置为transparent。
+```CSS
+//实现一个倒三角
+.triangle {
+  width: 0;
+  height: 0;
+  border-top: 100px solid red;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-bottom: 100px solid transparent
+}
+```
+- clip-path：clip-path可以剪切各种自定义的图像，通过函数`clip-path: polygon()`设置多边形、通过`circle`设置圆形、`ellipse`设置椭圆， `inset`设置矩形
+- 通过背景渐变`background: linear-gradient(45deg, deeppink, deeppink 50%, transparent 50%, transparent 100%)`
+- transform: rotate 配合 overflow: hidden 绘制三角形
+
+
 
 # 6、Vue 源码
 
