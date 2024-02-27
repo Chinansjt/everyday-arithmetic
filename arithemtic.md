@@ -613,7 +613,7 @@ function recursionDeepClone3(obj, map = new WeakMap()) {
 function recursionDeepClone4(obj, map = new WeakMap()) {
   if (obj === null) return obj;
   if(obj instanceof Date) return new Date(obj)
-  if(obj instanceof RegEx) return new RegEx(obj)
+  if(obj instanceof RegExp) return new RegExp(obj)
   if(typeof obj === 'object') {
     let newObj = Array.isArray(obj) ? [] : {}
     if(map.get(obj)) {
@@ -756,7 +756,7 @@ function myNew(Constructor, ...args) {
   obj.__proto__ = Constructor.prototype;
   let result = Constructor.apply(obj, args);
 
-  return typeof result === "object" && typeof result !== "null" ? result : obj;
+  return typeof result === "object" && result !== null ? result : obj;
 }
 ```
 
