@@ -789,24 +789,20 @@ setTimeout(bindSay, 1000); // my name is ning
 ```javascript
 //代码实现
 Function.prototype.myBind = function (context, ...args1) {
-  let that = this; //保存内部的this
-  //args2是在调用的时候可能会传入参数
-  function Bound(...args2) {
-    // 当是构造函数调用时，this 指向实例，that指向绑定的函数，结果为true，将绑定函数的this绑定为实例的this
-    // 而当是作为普通函数调用时，this指向window，that指向绑定的函数，结果为false，将绑定函数的this绑定为传入的context上下文。
-    let isNew = this instanceof that;
-    return that.apply(isNew ? this : context, args1.concat(args2));
+  if (typeof this !== 'function') {
+    throw new TypeError('Error')
   }
-  //Temp方法的主要作用就是重新创建一个新的、干净的原型复制给Bound，这样在原方法改变的情况下，调用的不好出现问题。
-  //定义一个新方法，用于继承原型。这里，我们定义了一个临时的构造函数 Temp。它的目的是仅仅作为一个桥梁，将原始函数的原型链接到绑定函数的原型上，而不会调用原始函数。
-  function Temp() {}
-  // 这里，我们将 Temp 的原型设置为原始函数（也就是 bind 方法被调用的函数）的原型。this 在这里指的是我们想要绑定的原始函数。
-  Temp.prototype = this.prototype;
-  //我们创建了 Temp 的一个新实例，并将这个新实例作为绑定函数（Bound）的原型。这意味着，现在，通过绑定函数创建的任何新对象都将从原始函数的原型继承属性。
-  Bound.prototype = new Temp();
-  // 这种方法的好处是，我们没有直接创建原始函数的新实例作为绑定函数的原型，因为那样可能会有不必要的副作用（因为原始函数的构造函数代码会被执行）。通过使用空的 Temp 函数，我们只是创建了一个原型链，而不会执行任何额外的代码。
-  return Bound;
-};
+  var _this = this
+  
+  // 返回一个函数
+  return function F() {
+    // 因为返回了一个函数，我们可以 new F()，所以需要判断
+    if (this instanceof F) {
+      return new _this(...args1, ...arguments)
+    }
+    return _this.apply(context, args1.concat(...arguments)) //ES6的方式
+  }
+}
 ```
 
 call和apply都是用于绑定this的指向，只是接收的参数不同。手写实现如下(apply一样实现，只是调用时传入的参数格式不一样)
