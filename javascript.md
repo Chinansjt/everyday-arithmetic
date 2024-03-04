@@ -880,12 +880,29 @@ meta标签定义在head标签内，用于定义浏览器的元数据。提供了
 # 6、Vue 源码
 
 ## 1. 执行 new Vue 后发生了什么
+`new Vue` 的本质是调用的 `this._init()` 方法：
 
-> 执行 new Vue 后，会调用 Vue 这个构造函数并创建一个实例。在这个过程中，先将用户传入的属性和内部的默认属性进行合并。紧接着 Vue 执行了一系列的初始化工作，如初始化生命周期、事件系统和 render，调用**beforeCreate**钩子。接着，初始化 data、props、computer、watch 和 method 等属性，调用**created**钩子。如果传入有 el 属性则自动执行$mount 进行挂载操作，即编译模版并转成渲染函数，生成虚拟 dom，最后挂载到真实的 dom 上。如果没有 el 属性，就需要手动进行挂载。
+`this._init()` 方法则是在 `initMixin()` 中扩展到 `Vue.prototype` 原型上的。
+
+`this._init()` 方法主要做了这 7 件事：
+
+- 将当前上下文标识为不可被监听的 `vm._isVue = true`
+- 调用 `mergeOptions()` 合并配置（赋值给 `vm.$options`）
+- 调用 `initLifecycle()` 初始化生命周期
+- 调用 `initEvents()` 初始化事件
+- 调用 `initRender()` 初始化渲染
+- 调用 `initState()` 初始化数据相关（`data`、`props`、`method`）
 
 ## 2. Vue 实例挂载的整个过程
+在 Vue 中是通过 `$mount` 方法进行实例的挂载：
 
-> 通过 new Vue 创建实例后, 若传入的 options 含有 el 属性，Vue 将自动开始挂载。此过程首先是模板编译：当存在 template 时，它被转化为渲染函数；否则，el 指定的外部 HTML 被用作模板。这个渲染函数中利用**createElement**生成虚拟 DOM，但是如果 option 中已经定义了 render 函数，那么就不会走这个编译模版的过程，而是直接调用**createElement**生成虚拟 DOM。接着，Vue 将虚拟 DOM 与真实 DOM 对比。首次挂载时，直接渲染；后续更新时，通过 diff 算法找出差异，并高效地更新真实 DOM。
+`$mount` 方法本质上是调用的 `mountComponent()` 方法，它主要做了这 3 件事：
+
+- 调用 `beforeMount()` 生命周期
+- 注册渲染 `Watcher`，它的回调函数是 `updateComponent()` 方法，`updateComponent()` 方法的本质是执行 `vm._update()` 方法，也就是 `vm._render` 函数。并且注册渲染 `Watcher` 时会传入 `watcherOptions`以及 `isRenderWatcher: true`，其中 `watcherOptions` 用于在组件挂载后执行 `beforeUpdate()` 生命周期，`isRenderWatcher: true` 标记该 `Watcher` 为渲染 `Watcher`。
+- 调用`mounted`生命周期
+
+其中`vm._render()`方法被调用，其作用是执行组件的渲染函数，以生成新的虚拟DOM。随后，`vm._update()`方法被调用，并且将`vm._render()`方法产生的虚拟DOM作为参数传递给它。`vm._update()`方法的作用是将新生成的虚拟DOM与旧的虚拟DOM进行对比diff，并根据需要更新实际的DOM。
 
 ## 3. Vue 组件创建的过程
 
@@ -893,21 +910,33 @@ meta标签定义在head标签内，用于定义浏览器的元数据。提供了
 7种：props、$emit、$parent、eventBus、ref、provide/inject、vuex
 
 ## 5. 响应式原理
-1. 数据劫持
-Vue通过数据劫持结合观察者模式来实现响应式系统。在Vue 2.x中，这主要是通过Object.defineProperty实现的，它允许Vue为`props`、`s`对象的每个属性设置getter和setter，从而能够在数据访问和修改时进行拦截。
+1. 响应式数据
+- 首先，是 `initState()`，它会对 `props`、`methods`、`data`、`computed`、`watch` 等进行初始化，这个过程会对命名进行判重处理。
 
-Getter：在属性被访问时触发，负责依赖收集，即将当前的组件（或计算属性等）作为订阅者添加到该属性的订阅列表中。
-Setter：在属性被修改时触发，负责通知变更，即通知所有订阅了该属性的订阅者进行更新。
-在Vue 3.x中，Vue使用了ES6的Proxy来代替Object.defineProperty，因为Proxy可以劫持整个对象，并且可以监听数组的变化，提供了更强大和灵活的响应式能力。
+- 其次，将诸如 `props`、`data`属性的每个字段等通过 `proxy` 代理到 `vm` 实例上，也就是说这样可以通过`this.propertyName`直接访问`data`中的属性，而不需要使用`this._data.propertyName`。这个代理过程是通过`proxy`函数实现的。
+
+- 最后，调用 `observer()` 函数将 `data` 或 `props` 变为响应式的数据，而在 `observer` 方法的核心是**为数据初始化 `Obverser` 类**。
+
+`Observer`类内部会初始化一个`Dep`类，用于管理对整个对象或数组的依赖和更新，然后调用`defineReactive`为对象的属性、数组的元素添加 `getter` 和 `setter`。而数组的原型方法会被重写，重写的本质是调用如`push`、`pop`等数组方法时进行拦截。
+
+`defineReactive()` 函数会先初始化一个 `Dep()` 类，给对象添加 `getter` 和 `setter`。
+
+`Observer`中的Dep实例用于管理对整个对象或数组的依赖和更新，而`defineReactive`中为每个属性创建的Dep实例则用于管理对单个属性的依赖和更新。
 
 2. 依赖收集
-当组件在渲染过程中访问了响应式数据的某个属性时，这个组件（视为订阅者）就会被收集到该属性的依赖列表中。Vue内部通过Watcher实例来管理这些订阅者。当数据变化时，setter会触发，然后通知所有订阅了该属性的Watcher实例进行更新。
+依赖收集发生在 `defineReactive()` 给对象添加的 `get` 中
 
-3. 虚拟DOM和Diff算法
-当响应式数据发生变化时，Vue会重新渲染组件。Vue使用虚拟DOM（Virtual DOM）来表示UI的状态，当数据变化时，Vue会创建一个新的虚拟DOM树，并与旧的虚拟DOM树进行比较（Diff算法通过双端比较和key的使用），计算出需要在真实DOM上进行的最小更新，从而高效地更新视图。
+首先当我们访问一个组件时，Vue会为这个组件创建一个渲染`Watcher`，而这个`Watcher`在访问对应的响应式属性时就会触发`getter`将`Watcher`收集到这个属性的`Dep`收集起来。
 
-4. 异步更新队列
-Vue在响应式数据变化时并不会立即更新DOM，而是将更新任务放入一个异步队列中。在同一事件循环中，如果同一个Watcher被多次触发，Vue会将其合并，从而避免不必要的重复渲染。在下一个事件循环“tick”中，Vue清空队列，执行实际的DOM更新。
+在`getter`的内部，通过`Dep.target`来判断当前是否有活跃的`Watcher`，并将其收集到`Dep`中。`Dep.target`由`targetStack`管理。
+
+数据的 `getter` 中会调用 `dep.depend()`，它会调用 `Dep.target.addDep(this)`，即 `Watcher` 的 `addDep()` 方法，然后调用 `dep.addSub(this)`，即将该渲染 `Watcher` 添加到该数据的 `subs` 中
+
+3. 派发更新
+
+- 当在组件中对响应的数据做了修改，就会触发 `setter` 逻辑，最后调用 `dep.notify()` 方法，通知订阅者 `Watcher` 更新
+- `dep.notify()` 是遍历 `dep.subs` 数组，调用每个 `Watcher` 的 `update()` 方法
+- `update()`大多数又会调用`queueWatcher()` 方法，本质是将 `watcher` 添加到队列中，即每次派发更新会先收集相关的 `watcher`，最后统一调用 `watcher` 的回调。重复的 `wactcher.id` 会被过滤，即保证一次派发更新只触发对应的 `watcher` 的一次更新，然后在下一个 `tick`（异步）调用统一进行更新。
 
 ## 6. 虚拟Dom
 1. 概念：虚拟DOM是真实DOM的轻量级JavaScript对象表示。它是一个抽象的概念，主要用于在内存中模拟DOM树的结构。每个虚拟DOM对象都对应一个真实的DOM节点。
@@ -933,6 +962,41 @@ vue diff算法的重点
 
 ## 8. v-model
 v-model指令实际上是一个语法糖，背后由:value和@input指令实现。在数据到ui视图这个过程使用:value来绑定显示数据，而在ui视图到数据这个过程使用@input来监听用户对表达元素的操作，然后将数据更新到vue实例数据中。
+
+## 9. nextTick
+`nextTick`的作用主要是用于异步执行回调，确保DOM更新完成后执行某些操作。
+
+- `nextTick()` 函数执行的核心是将传入的 `cb` 回调函数存入 `callbacks` 中（不马上执行），保证在一个 Tick 中多次执行 `nextTick()`，避免一下开启多个异步任务，而是在异步任务中按照进入 `callbacks` 的先后顺序执行同步执行回调函数。
+
+- 此外在 `nextTick()` 中还兼容了 `nextTick().then(() => {})` 方式调用使用，即不传 `cb` 的时候，会返回一个 `Promise`
+
+`nextTick`尝试按照以下顺序来向后兼容使用异步队列：
+
+- Promise.then
+- MutationObserver
+- setImmediate
+- setTimeout(fn, 0)
+
+## 10. slot
+`slot`插槽分为匿名插槽、具名插槽、作用域插槽。
+
+- 匿名插槽和具名插槽都是用于替换子组件里的内容，可以理解为将子组件定义的`slot`替换成父组件传入的内容。匿名插槽不用指定名字，只能有一个，而具名插槽可以有多个。
+- 作用域插槽是可以子组件的插槽的将数据传递回父组件，这样父组件就可以访问子组件的数据。
+
+## 11. vuex
+
+- State：Vuex使用单一状态树，即一个对象包含了你的应用层级状态的全部，并作为一个"唯一数据源(SSOT)"存在。每个应用将仅仅包含一个store实例。
+
+- Getters：可以认为是store的计算属性，用于从store的state中派生出一些状态，例如过滤列表、计数等。
+
+- Mutations：更改Vuex的store中的状态的唯一方法是提交mutation。
+
+- Actions：Actions类似于mutations，不同在于：
+ - Action提交的是mutation，而不是直接变更状态。在页面中通过`this.$store.dispatch`触发`action`，然后在`action`中通过`commit()`触发`mutation`更改数据。
+ - `Action`可以包含任意异步操作。
+
+- Modules：由于使用单一状态树，应用的所有状态会集中到一个大对象。当应用变得非常复杂时，store对象就有可能变得相当臃肿。为了解决这个问题，Vuex允许我们将store分割成模块（module）。每个模块拥有自己的state、mutation、action、getter，甚至是嵌套子模块。
+
 
 # 7、浏览器
 
