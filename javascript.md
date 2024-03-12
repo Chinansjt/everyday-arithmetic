@@ -973,6 +973,37 @@ vue diff算法的重点
 - 通过双端比较，Vue diff算法能够有效地处理列表中的节点顺序变化。
 - 当遇到无法直接复用的节点时，Vue会进行深度比较，并应用必要的DOM更新。
 
+
+**vue2和vue3diff的区别**
+
+1. Vue2 的 Diff 算法
+
+在 Vue2 中，diff 算法的核心是一个双端比较的过程。当组件需要更新时，Vue 会对新旧虚拟 DOM 树进行比较，以确定哪些部分需要被更新。这个过程主要涉及以下几个步骤：
+
+- 初始化四个指针：分别指向新旧虚拟 DOM 子节点数组的开始和结束位置，这四个指针分别是 oldStartIdx、oldEndIdx、newStartIdx 和 newEndIdx。
+
+- 双端比较：算法首先会比较 oldStart 与 newStart、oldEnd 与 newEnd、oldStart 与 newEnd 以及 oldEnd 与 newStart 四种情况，以尽可能地复用节点。
+
+- 更新节点：当发现节点可以复用但是节点内部的数据发生变化时，会直接更新该节点的数据。
+
+- 移动和添加节点：如果新的节点在旧的节点列表中没有找到匹配项，那么这个新节点就是需要被添加的新节点。如果旧的节点列表中有节点在新的节点列表中没有匹配项，那么这个旧节点需要被移除。
+
+通过这种方式，Vue2 的 diff 算法可以有效地更新 DOM，但在面对一些极端情况时（比如大量节点的位置发生变化），其性能表现可能会有所下降。
+
+2. Vue3 的 Diff 算法（优化版）
+Vue3 对 diff 算法进行了优化，以提高性能，尤其是在处理大型列表时。Vue3 的 diff 算法引入了静态标记和片段（Fragment）的概念，以及最长递增子序列算法来优化节点移动的检测。具体来说：
+
+- 静态标记和 Fragment：Vue3 会在编译阶段标记静态根节点和静态节点，减少运行时的比较次数。同时，通过使用 Fragment 来避免不必要的 DOM 节点，减少了 DOM 操作。
+
+- 最长递增子序列：当处理需要重新排序的列表时，Vue3 会使用这个算法来找出最少量的节点移动操作，从而优化了节点的重新排序。
+
+- 优化的双端比较：虽然 Vue3 仍然使用双端比较算法，但通过上述优化，减少了需要进行双端比较的节点数量，提高了效率。
+
+
+**区别总结：**相比于 Vue2，Vue3 的 diff 算法通过编译时优化（静态标记）、运行时优化（最长递增子序列算法和 Fragment）以及更高效的双端比较，显著提高了对大型列表和频繁变动的列表的处理能力。这些优化减少了不必要的 DOM 操作和重排，提高了整体的性能表现。
+
+
+
 ## 8. v-model
 v-model指令实际上是一个语法糖，背后由:value和@input指令实现。在数据到ui视图这个过程使用:value来绑定显示数据，而在ui视图到数据这个过程使用@input来监听用户对表达元素的操作，然后将数据更新到vue实例数据中。
 
@@ -1090,7 +1121,7 @@ vue3的响应式性能更优于vue2，因为vue2使用`Object.definePrototype`�
 - 合成（Composite）：在某些情况下，为了优化性能，浏览器会将页面分成多个层进行绘制，然后将这些层合并到一起。这有助于高效地处理页面的动画和滚动等。
 
 
-`<link>`标签主要影响页面的渲染过程，而不会阻塞DOM树的构建，而`<script>`标签则可能会阻塞DOM树的构建，特别是如果没有使用async或defer属性的话。为了优化加载性能和用户体验，开发
+`<link>`标签主要影响页面的渲染过程，而不会阻塞DOM树的构建，而`<script>`标签则可能会阻塞DOM树的构建，特别是如果没有使用async或defer属性的话。
 
 ## 3. 变量提升
 由于JS代码的执行顺序是**先编译再执行**，变量提升是指在JavaScript代码的编译阶段中，JS引擎会把var定义的变量的声明部分和函数的声明部分提到代码的“开头”，存到变量环境中，而变量的值默认会被赋值为默认值`undefined`。因此我们可以在变量或函数未声明之前使用它，而不会报错。在代码执行阶段，JavaScript 引擎会从变量环境中去查找自定义的变量和函数。函数提升要比变量提升的优先级要高一些，且不会被变量声明覆盖，但是会被变量赋值之后覆盖。
@@ -1177,6 +1208,11 @@ hash
 > - Cookie：存储在请求头中，通过服务器进行通信。
 > - Window.postMessage：从一个窗口发送消息到另一个窗口，无论这个窗口是否同源，可以用于跨域通信。
 
+
+iframe中，外面如何获取里面的真实高度？跨 iframe 通信是否了解过？
+同源<iframe>可以直接通过DOM访问其内容来获取高度。
+跨域<iframe>需要通过window.postMessage进行安全的跨文档通信来获取高度。
+
 ## 16. 常见的内存泄漏有哪些
 
 > - 未清除的定时器
@@ -1245,12 +1281,37 @@ hash
 
 2. 工作流程
 
-- 初始化：启动构建，读取和合并配置参数，加载插件，实例化Compiler。
-- 编译：从Entry开始，递归解析所有依赖项。对每个模块使用相应的Loader去转换这个文件的内容，最终转换为JavaScript。
-- 构建模块：对于每个模块，Webpack会通过Loader链中的Loader去预处理文件。加载器可以同步或异步执行，将所有类型的文件转换为Webpack能够处理的有效模块。
-- 输出：根据Entry和模块之间的依赖关系，组装成一个个包含多个模块的Chunk，再把每个Chunk转换成一个单独的文件加入到输出列表，这个过程称为chunking。
-- 优化：对于bundle文件进行优化，比如压缩JavaScript文件、Tree-Shaking。
-- 发射：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。
+1. 配置解析（Configuration Resolution）:
+- 当运行Webpack时，首先会合并从命令行参数和配置文件中读取到的配置。
+- Webpack 会处理配置文件，这个配置文件是一个导出对象的JavaScript文件，这个对象定义了Webpack的行为。
+- 如果存在多个配置文件或者使用了 webpack-merge，这些配置会被合并。
+2. 初始化插件（Initialization of Plugins）:
+- 根据配置初始化插件。这些插件可以监听Webpack打包过程中的各种事件，并执行相应的动作，从而修改或优化打包过程。
+3. 编译创建（Compilation Creation）:
+- 使用上述的配置初始化一个 compiler 对象。
+- compiler 对象包含了Webpack环境所有的配置信息，包括options、loader和plugin。
+- 这个阶段会触发 initialize 和 compile 事件。
+4. 入口解析（Entry Resolution）:
+
+- 根据配置中的 entry 属性开始解析入口文件。
+- 入口文件表示应用程序的开始，Webpack会从这个文件开始构建内部的依赖图。
+5. 构建模块（Build Modules）:
+
+- 从入口文件出发，递归地解析所有依赖项。
+- 对每个模块使用相应的loader进行转换。
+- 转换后的模块被添加到依赖图中。
+6. 完成模块编译（Finish Module Compilation）:
+
+- 一旦所有模块都被加载，会触发 after-compile 事件。
+- 此时，所有模块都已经完成了转换处理。
+7. 输出资源（Output Assets）:
+
+- 根据依赖图和配置，Webpack 会生成一个或多个bundle。
+- 生成资源并输出到配置的 output.path 目录中。
+8. 完成打包过程（Complete the Bundle Process）:
+
+- 在输出资源之后，Webpack会触发 done 事件，标志着打包过程的完成。
+
 
 在整个过程中，Webpack会在适当的时候通过`Tapable`广播事件，插件会监听这些事件，进而插入自己的逻辑，以影响构建结果。
 
@@ -1608,6 +1669,31 @@ class BuildInfoPlugin {
   }
 }
 ```
+
+## 19. 提升webpack打包速度
+1. 使用高版本的 Webpack 和 Node.js
+- 确保你使用的是最新的 Webpack 和 Node.js。新版本通常包含性能改进和优化。
+2. 优化 Loader 配置
+- 使用 include 和 exclude 来限制 loader 的作用范围，避免不必要的文件处理。
+3. 使用 cache-loader
+- 使用 cache-loader 或开启其他 Loader 的缓存选项，可以缓存 Loader 的处理结果，减少不必要的重新构建。
+4. 减少解析
+- 减少模块解析的复杂度，例如，通过配置 resolve.extensions 和 resolve.alias 来缩短解析路径和减少解析工作。
+5. 优化插件使用
+- 确保只使用必要的插件，并检查插件是否有性能影响。
+- 对于开发环境，避免使用体积和性能成本高的插件，如 UglifyJsPlugin、TerserPlugin。
+6. 代码拆分
+- 使用动态导入（import()）来拆分代码，实现懒加载，减少初始加载时间。
+- 利用 SplitChunksPlugin 来分离公共库和模块，减少重复代码。
+7. 使用 DLL
+- 利用 DllPlugin 和 DllReferencePlugin 分离第三方库（如 React、Vue、Lodash 等），避免它们被重复构建。
+8. 开启多进程打包
+- 使用 thread-loader 或 parallel-webpack 来开启多进程打包，充分利用多核 CPU 资源。
+9. 开发环境优化
+- 开发环境下，使用 devtool: 'eval' 或 devtool: 'cheap-module-eval-source-map' 以提高源映射生成的速度。
+- 使用 Hot Module Replacement（模块热替换）可以只更新改变的模块，避免全页刷新。
+10. 监控和分析
+- 使用 webpack-bundle-analyzer、speed-measure-webpack-plugin 等工具来监控和分析打包过程，找出性能瓶颈
 
 ## NPM
 
@@ -2236,8 +2322,6 @@ TCP（传输控制协议）和HTTP（超文本传输协议）在都是网络通�
 - 客户端请求携带 `Range: bytes=x-y`，多段用逗号隔开
 - 服务器校验是否合法，合法返回 `206 Partial Content` 、`Accept-Range: bytes` 和 `Content-Range: bytes 0-9/100`，以及返回对应的片段；不合法返回 `416`
 
-## 15. 缓存策略
-浏览器的缓存策略主要是使用强缓存和协商缓存。其中在发送一个请求的时候，浏览器会查看`cache-control`请求头的值，如果`max-age`的值是有效期内就拦截请求，使用缓存的值。如果说不在有效期内，或者是将这个字段设置为`no-cache`，那么浏览器就会发起一个请求访问服务器，请求头就会
 
 # 工程化 
 ## Eslint、Prettier、styleLint
