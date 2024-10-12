@@ -890,22 +890,23 @@ meta标签定义在head标签内，用于定义浏览器的元数据。提供了
 # 6、Vue 源码
 
 ## 1. 执行 new Vue 后发生了什么
-`new Vue` 的本质是调用的 `this._init()` 方法：
+- 当调用 `new Vue` 时，Vue的实例开始被创建，本质上是调用`this._init()` 方法。
 
-`this._init()` 方法则是在 `initMixin()` 中扩展到 `Vue.prototype` 原型上的。
+- `this._init()` 方法主要做了这 7 件事：
 
-`this._init()` 方法主要做了这 7 件事：
-
-- 将当前上下文标识为不可被监听的 `vm._isVue = true`
-- 调用 `mergeOptions()` 合并配置（赋值给 `vm.$options`）
-- 调用 `initLifecycle()` 初始化生命周期
-- 调用 `initEvents()` 初始化事件
-- 调用 `initRender()` 初始化渲染
-- 调用 `beforeCreate` 
-- 调用 `initState()` 初始化数据相关（`data`、`props`、`method`）
-- 调用 `create`
+  > - 将当前上下文标识为不可被监听的 `vm._isVue = true`
+  > - 调用 `mergeOptions()` 合并配置（赋值给 `vm.$options`），将用户传人的`data、methods`等进行合并
+  > - 调用 `initLifecycle()` 初始化生命周期
+  > - 调用 `initEvents()` 初始化事件
+  > - 调用 `initRender()` 初始化渲染
+  > - 调用 `beforeCreate` 
+  > - 调用 `initState()` 初始化数据相关（`data`、`props`、`method`、`watch`、`computed`）
+  > - 调用 `create`
 
 ## 2. Vue 实例挂载的整个过程
+Vue实例挂载的整个过程涉及到模板编译、虚拟DOM的创建和更新、真实DOM的渲染等步骤。
+
+
 在 Vue 中是通过 `$mount` 方法进行实例的挂载：
 
 `$mount` 方法本质上是调用的 `mountComponent()` 方法，它主要做了这 3 件事：
@@ -929,14 +930,15 @@ meta标签定义在head标签内，用于定义浏览器的元数据。提供了
 
 - 最后，调用 `observer()` 函数将 `data` 或 `props` 变为响应式的数据，而在 `observer` 方法的核心是**为数据初始化 `Obverser` 类**。
 
+**Dep（依赖容器）**：每一个响应式数据都会有一个Dep依赖容器，用于存储依赖该响应式数据对应的`渲染Watcher`，也就是说，所有访问A数据的组件，都会被收集到这个依赖中。
+
 `Observer`类内部会初始化一个`Dep`类，用于管理对整个对象或数组的依赖和更新，然后调用`defineReactive`为对象的属性、数组的元素添加 `getter` 和 `setter`。而数组的原型方法会被重写，重写的本质是调用如`push`、`pop`等数组方法时进行拦截。
 
 `defineReactive()` 函数会先初始化一个 `Dep()` 类，给对象添加 `getter` 和 `setter`。
 
-`Observer`中的Dep实例用于管理对整个对象或数组的依赖和更新，而`defineReactive`中为每个属性创建的Dep实例则用于管理对单个属性的依赖和更新。
-
 2. 依赖收集
 
+**渲染Watcher**：每一个组件在初始化渲染时都会有一个`渲染watcher`，用来跟踪组件的数据变化，当数据发生变化时，会通知组件更新。
 依赖收集发生在 `defineReactive()` 给对象添加的 `get` 中
 
 首先当我们访问一个组件时，Vue会为这个组件创建一个渲染`Watcher`，而这个`Watcher`在访问对应的响应式属性时就会触发`getter`将`Watcher`收集到这个属性的`Dep`中。
@@ -945,10 +947,10 @@ meta标签定义在head标签内，用于定义浏览器的元数据。提供了
 
 数据的 `getter` 中会调用 `dep.depend()`，它会调用 `Dep.target.addDep(this)`，即 `Watcher` 的 `addDep()` 方法，然后调用 `dep.addSub(this)`，即将该渲染 `Watcher` 添加到该数据的 `subs` 中
 
-1. 派发更新
+3. 派发更新
 
-- 当在组件中对响应的数据做了修改，就会触发 `setter` 逻辑，最后调用 `dep.notify()` 方法，通知订阅者 `Watcher` 更新
-- `dep.notify()` 是遍历 `dep.subs` 数组，调用每个 `Watcher` 的 `update()` 方法
+- 当在组件中对响应的数据做了修改，就会触发 `setter` 逻辑，然后触发数据的Dep，也就是`dep.notify()` 方法，通知订阅者 `Watcher` 更新
+- `dep.notify()` 会遍历 `dep.subs` 数组，调用每个 `Watcher` 的 `update()` 方法进行更新。
 - `update()`大多数又会调用`queueWatcher()` 方法，本质是将 `watcher` 添加到队列中，即每次派发更新会先收集相关的 `watcher`，最后统一调用 `watcher` 的回调。重复的 `wactcher.id` 会被过滤，即保证一次派发更新只触发对应的 `watcher` 的一次更新，然后在下一个 `tick`（异步）调用统一进行更新。
 
 ## 6. 虚拟Dom
@@ -2408,6 +2410,7 @@ TCP（传输控制协议）和HTTP（超文本传输协议）在都是网络通�
 - Last-Modified：服务器在响应头中返回资源的最后修改时间。
 - If-Modified-Since：浏览器在请求头中带上上次返回的 Last-Modified 值，请求服务器确认该资源是否在此时间之后有更新。
 - 如果资源自该时间点之后未被修改，服务器返回 304 Not Modified，否则返回新的资源和 200 OK。
+
 **ETag / If-None-Match：**
 
 - ETag：服务器为每个资源生成的唯一标识符，通常是根据文件内容生成的哈希值。
