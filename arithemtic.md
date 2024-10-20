@@ -10,7 +10,6 @@ function reverseString(string) {
   return reverseStr;
 }
 ```
-
 ## 2、两数之和
 
 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那两个整数，并返回它们的索引（索引从 0 开始）。
@@ -33,7 +32,16 @@ function twosSum(nums, target) {
   return null;
 }
 ```
-
+function twoSum(nums, target) {
+  let numMap = new Map()
+  for(let i = 0; i < nums.length; i++) {
+    let surplus = target - nums[i]
+    if(numMap.has(surplus)) {
+      return [numMap.get(surplus), i]
+    }
+    numMap.set(nums[i], i)
+  }
+}
 ## 3、合并两个数组（有序）
 
 给定两个有序整数数组 list1 和 list2， list2 合并到 list1 中，使得 list1 成为一个有序数组。
@@ -67,7 +75,30 @@ function masterTowsLists(list1, list2) {
   return masterList;
 }
 ```
+function masterList(list1, list2) {
+  const twoList = []
+  const i = list1.length
+  const j = list2.length
 
+  while(i < list1.length && j < list2.length) {
+    if(list1[i] < list2[j]) {
+      twoList.push(list1[i])
+      i++
+    } else {
+      twoList.push(list2[j])
+      j++
+    }
+  }
+  while(i < list1.length) {
+    twoList.push(list1[i])
+    i++
+  }
+  while(j < list2.length) {
+    twoList.push(list2[i])
+    j++
+  }
+  return twoList
+}
 ## 4、续上第三题（合并两个数组）
 
 加上额外的限制条件，当传入的两个数组是无序时，合并两个数组
@@ -102,6 +133,25 @@ function masterTwosLists(list1, list2) {
   return list;
 }
 ```
+function quickSort(list) {
+  if(list.length < 1) {
+    return list
+  }
+
+  const p = list[0]
+  const left = []
+  const right = []
+
+  for(let i = 1; i < list.length; i++) {
+    if(p < list[i]) {
+      left.push(list[i])
+    } else {
+      right.push(list[i])
+    }
+  }
+  return quickSort(left).concat(p, quickSort(right))
+  
+}
 
 ## 5、回文数
 
@@ -135,7 +185,21 @@ function isPalindrome(x) {
   return true;
 }
 ```
+function reverseString(string) {
+  if(string.length < 1) return false
 
+  let i = 0
+  let j = string.length - 1
+  while(i < j) {
+    if(string[i] === string[j]) {
+      i++;
+      j--;
+    } else {
+      return false
+    }
+  }
+  return true
+}
 ## 6、最长公共前缀
 
 编写一个函数来查找字符串数组中的最长公共前缀。如果不存在公共前缀，返回空字符串 ""。
@@ -163,6 +227,18 @@ function longestCommonPrefix(strs) {
   return prefix;
 }
 ```
+function findPrefix(strList) {
+  let prefix = strList[0]
+  for(let i = 1; i < strList.length; i++) {
+    while(strList[i].indexOf(perfix) !== 0) {
+      perfix.splice(0, perfix.length - 1)
+    }
+    if(perfix.length === 0) {
+      return ''
+    }
+  }
+  return prefix
+}
 
 ## 7、有效的括号
 
@@ -195,6 +271,27 @@ function isBracket(s) {
 }
 ```
 
+function isBracket(s) {
+  if(s.length < 1) return false
+
+  const bracket = []
+  const bracketMap = {
+    '(': ')',
+    '{': '}',
+    '[': ']'
+  }
+  for(let i = 0; i < s.length; i++) {
+    if(s[i] in bracketMap[i]) {
+      bracket.push(s[i])
+    } else {
+      if(bracket.length !== 0 || bracketMap[bracket.pop()]) !== s[i] {
+        return false
+      }
+    }
+  }
+  return bracket.length == 0
+}
+
 ## 8、删除有序数组中的重复项
 
 给你一个 非严格递增排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持 一致 。然后返回 nums 中唯一元素的个数。
@@ -219,7 +316,18 @@ function removeDuplicates(nums) {
   return uniqueCount;
 }
 ```
+function removeDup(nums) {
+  if(num.length === 0) return 0
 
+  let uniqueCount = 1
+  for(let i=i; i < nums.length; i++;) {
+    if(nums[i] !== nums[i - 1]) {
+      nums[uniqueCount] = nums[i]
+      uniqueCount++
+    }
+  }
+  return uniqueCount
+}
 ## 9、搜索插入位置
 
 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。请必须使用时间复杂度为 O(log n) 的算法。
@@ -244,7 +352,22 @@ function searchInsert(nums, target) {
   return left; // 目标值不存在，返回插入位置
 }
 ```
-
+[1,2,3,4,5,6,7]
+function searchInsert(nums, target) {
+  let i = 0;
+  let j = nums.length - 1;
+  while(i < j) {
+    let mid = Math.floor((i+j) / 2);
+    if(nums[mid] === target) {
+      return mid
+    } else if(nums[mid] < target) {
+      i = mid + 1
+    } else {
+      j = mid - 1
+    }
+  }
+  return i
+}
 ## 10、最后一个单词的长度
 
 给你一个字符串 s，由若干单词组成，单词前后用一些空格字符隔开。返回字符串中 最后一个 单词的长度。
@@ -294,7 +417,19 @@ function plusOne(digits) {
   return digits;
 }
 ```
-
+function plusOne(digits) {
+  let carry = 1;
+  for(let i = digits.length -1 ; i >= 0; i--) {
+    const sun = digits[i] + carry
+    digits[i] = sum / 10
+    carry = Math.floor(sun / 10)
+    if(carry === 0) {
+      return digits
+    }
+  }
+  digits.unshift(carry)
+  return digits
+}
 ## 12、二进制求和
 
 给你两个二进制字符串 a 和 b ，以二进制字符串的形式返回它们的和。
@@ -325,7 +460,23 @@ function addBinary(a, b) {
   return results;
 }
 ```
+function  addBinary(a, b) {
+  let carry = 1;
+  let results = ''
+  let i = a.length - 1 
+  let j = b.length - 1
 
+  while(0 <= i || 0 <= j || carry > 0) {
+    let digitA = i > 0 ? parseInt(a[i]) : 0
+    let digitB = j > 0 ? parseInt(b[j]) : 0
+    const sun = digitA + digitB + carry
+    carry = Math.floor(sun / 2)
+    results = (sun % 2) + results
+    i--
+    j--
+  }
+  return results
+}
 ## 13、 x 的平方根
 
 给你一个非负整数 x ，计算并返回 x 的 算术平方根 。由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。
@@ -436,7 +587,20 @@ function flat(arr, n) {
   return result;
 }
 ```
-
+function flat(arr, n) {
+  let result = []
+  function flatArray(arrs, deep) {
+    for(let i = 0; i < arr.length; i++;) {
+      if(Array.isArray(arr[i]) && deep < n) {
+        flatArray(arr[i], deep + 1)
+      } else {
+        result.push(arr[i])
+      }
+    } 
+  }
+  flatArray(arr, 0)
+  return result
+}
 ## 17、千分位分割符
 
 给你一个整数 n，请你每隔三位添加点（即 "." 符号）作为千位分隔符，并将结果以字符串格式返回。
@@ -528,6 +692,25 @@ function throttle(fun, delay) {
   };
 }
 ```
+function debounce(fun, time) {
+  let timer = null 
+  return function (...args){
+    if(timer) clearTimeOut(timer)
+    timer = setTimeOut(()=> {
+      fun.apply(this, args)
+    })
+  }
+}
+function throttle(fun,time) {
+  let lastRunTime = 0;
+  return function (...args) {
+    let now = Date.now();
+    if(now - lastRunTime >= time) {
+      fun.apply(this, args)
+      lastRunTime = now
+    }
+  }
+}
 
 ## 20、实现一个 shallowClone、deepClone
 
@@ -629,6 +812,24 @@ function recursionDeepClone4(obj, map = new WeakMap()) {
   }
 }
 ```
+function deepClone(obj, map = new WeekMap()) {
+  if(obj === null) return obj;
+  if(obj instanceof Date) return new Date(obj)
+  if(obj instanceof RegExp) return new RegExp(obj)
+  if(typeof obj === 'object') {
+    let newObj = Array.isArray(obj) ? [] : {}
+    if(map.get(obj)) {
+      return map.get(obj)
+    }
+    map.set(obj, newObj)
+    for(const key in obj) {
+      newObj[key] =  deepClone(obj[key], map)
+    }
+    return newObj
+  } else {
+    return obj
+  }
+}
 
 ## 21、手写实现 Promise.all()和 Promise.race()
 
@@ -759,7 +960,12 @@ function myNew(Constructor, ...args) {
   return typeof result === "object" && result !== null ? result : obj;
 }
 ```
-
+function myNew(Constructor, ...args) {
+  let obj = {}
+  obj.__proto__ = Constructor.prototype;
+  let result = Constructor.apply(obj, args)
+  return typeof result === 'object' && result !== null ? result : obj
+}
 bind 用于绑定 this 的指向，更改函数的上下文，执行 bind 后函数并不会立即执行，需要再次调用。
 
 ```javascript
@@ -804,7 +1010,18 @@ Function.prototype.myBind = function (context, ...args1) {
   }
 }
 ```
-
+Function.prototype.myBind = function (context, ...args1) {
+  if(typeOf this !== 'function') {
+    throw new TypeError('error')
+  }
+  var _this = this
+  return function F() {
+    if(this instanceof F){
+      return new _this(...args1, ...arguments)
+    }
+    return _this.apply(context, args1.concat(...arguments))
+  }
+}
 call和apply都是用于绑定this的指向，只是接收的参数不同。手写实现如下(apply一样实现，只是调用时传入的参数格式不一样)
 
 > * 获取传入的上下文，如果为null或者undefine则指定为window全局对象
@@ -853,7 +1070,6 @@ async function asyncPool(limit, arrayFun) {
   return resolve
 }
 ```
-
 ## 25、js实现实现二叉树的层序遍历
 
 给定一个二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
@@ -903,3 +1119,15 @@ function myInstanceof(instance, constructor) {
   return false
 }
 ```
+function myInstanceof(instance, constructor) {
+  let proto = Object.getPrototypeOf(instance)
+
+  let prototype = constructor.prototype
+  while(proto) {
+    if(proto === prototype) {
+      return true
+    }
+    proto = Object.getPrototypeof(proto)
+  }
+  return false
+}
